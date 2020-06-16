@@ -64,7 +64,7 @@ var featuresArray = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'con
 var photosArray = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg']
 var titleText;
 var descriptionText;
-
+var guestsNumber;
 
 function generatePinArray(count) {
 
@@ -80,7 +80,7 @@ function generatePinArray(count) {
         price: getRandomInt(maxCoast),
         type: typeArray[0 + Math.floor(Math.random() * (typeArray.length - 0))],
         rooms: getRandomInt(maxRoomsCount),
-        quests:
+        quests: guestsNumber;
         checkin: checkArray[0 + Math.floor(Math.random() * (checkArray.length - 0))],
         checkout: checkArray[0 + Math.floor(Math.random() * (checkArray.length - 0))],
         features: featuresArray[0 + Math.floor(Math.random() * (featuresArray.length - 0))],
@@ -96,12 +96,6 @@ function generatePinArray(count) {
   return arr;
 }
 var similarAds = generatePinArray(8);
-
-
-"title": строка, заголовок предложения
-"guests": число, количество гостей, которое можно разместить
-
-"description": строка с описанием,
 
 
 
