@@ -113,24 +113,23 @@ for (var i = 0; i < similarAds.length; i++) {
 mapPin.appendChild(fragment);
 
 var similarCardTemplate = document.querySelector('#card').content.querySelector('.map__card');
-var createCard = function () {
+var createCard = function (offer) {
   var cardElement = similarCardTemplate.cloneNode(true);
-  cardElement.document.querySelector('.popup__title').textContent = generatePinArray.offer.title;
-  cardElement.querySelector('.popup__text--address').textContent = generatePinArray.offer.address;
-  cardElement.querySelector('.popup__text--price').textContent = generatePinArray.offer.price + '₽/ночь';
-  cardElement.querySelector('.popup__type').textContent = generatePinArray.offer.type;
-  cardElement.querySelector('.popup__text--capacity').textContent = generatePinArray.offer.rooms + 'комнаты для' + generatePinArray.offer.guests + 'гостей';
-  cardElement.querySelector('.popup__text--time').textContent = 'заезд после' + generatePinArray.offer.checkin + ',' + 'выезд после' + generatePinArray.offer.checkout;
-  cardElement.querySelector('.popup__features').textContent = generatePinArray.offer.features;
-  cardElement.querySelector('.popup__description').textContent = generatePinArray.offer.description;
-  cardElement.querySelector('.popup__photos').textContent = generatePinArray.offer.photos;
+  cardElement.document.querySelector('.popup__title').textContent = offer.title;
+  cardElement.querySelector('.popup__text--address').textContent = offer.address;
+  cardElement.querySelector('.popup__text--price').textContent = offer.price + '₽/ночь';
+  cardElement.querySelector('.popup__type').textContent = offer.type;
+  cardElement.querySelector('.popup__text--capacity').textContent = offer.rooms + 'комнаты для' + offer.guests + 'гостей';
+  cardElement.querySelector('.popup__text--time').textContent = 'заезд после' + offer.checkin + ',' + 'выезд после' + offer.checkout;
+  cardElement.querySelector('.popup__features').textContent = offer.features;
+  cardElement.querySelector('.popup__description').textContent = offer.description;
+  cardElement.querySelector('.popup__photos').textContent = offer.photos;
   return cardElement;
 };
 
+
 var fragmentCard = document.createDocumentFragment();
-for (var k = 0; k < similarAds.length; k++) {
-  fragmentCard.appendChild(createCard(similarAds[k]));
-}
+fragmentCard.appendChild(createCard(similarAds[0]));
 mapPin.appendChild(fragmentCard);
 
 var mapContainer = document.querySelector('.map__filters-container');
