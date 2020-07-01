@@ -1,6 +1,5 @@
 'use strict';
 var mapVision = document.querySelector('.map');
-mapVision.classList.remove('map--faded');
 var mapPin = document.querySelector('.map__pins');
 var mapPinWidth = mapPin.offsetWidth;
 var pin = document.querySelector('.map__pin');
@@ -9,9 +8,149 @@ var pinHeight = pin.offsetHeight;
 var maxCoast = 600;
 var maxRoomsCount = 4;
 var maxGuestsCount = 10;
+var mapInput = document.querySelectorAll('.ad-form input');
+var mapSelect = document.querySelectorAll('.ad-form select');
+var mapPinMain = document.querySelector('.map__pin--main');
+var mapFilter = document.querySelector('.map__filters');
+var formDisabled = document.querySelector('.ad-form--disabled');
+var minTitleLength = 30;
+var maxTitleLength = 100;
+var titleInput = document.querySelector('input[name="title"]');
+// var mainForm = document.querySelector('.ad-form');
+var addressInput = document.querySelector('input[name="address"]');
+var typeSelect = document.querySelector('select[name="type"]');
+var timeInSelect = document.querySelector('select[name="timein"]');
+var timeOutSelect = document.querySelector('select[name="timeout"]');
+var priceInput = document.querySelector('input[name="price"]');
+var roomSelect = document.querySelector('select[name="rooms"]');
+var capacitySelect = document.querySelector('select[name="capacity"]');
+
+
+// взяла из задания, но хз как использовать
+// var buttonPressed = instanceOfMouseEvent.button;
+
+
+// АКТИВНЫЙ РЕЖИМ
+mapPinMain.addEventListener('mousedown', function () {
+  mapVision.classList.remove('map--faded');
+  formDisabled.classList.remove('ad-form--disabled');
+  mapFilter.disabled = 'false';
+  mapInput.disabled = 'false';
+  mapSelect.disabled = 'false';
+}
+);
+
+
+mapPinMain.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    evt.preventDefault();
+    mapVision.classList.remove('map--faded');
+    formDisabled.classList.remove('ad-form--disabled');
+    mapFilter.disabled = 'false';
+    mapInput.disabled = 'false';
+    mapSelect.disabled = 'false';
+  }
+});
+
+
+// АДРЕС
+addressInput.disabled = true;
+
+
+// ЗАГОЛОВОК
+// здесь нужно invalid ставить на всю форму или только на инпут title? что-то разницы не заметила
+titleInput.addEventListener('invalid', function () {
+  if (titleInput.validity.valueMissing) {
+    titleInput.setCustomValidity('Обязательное поле');
+  } else {
+    titleInput.setCustomValidity('');
+  }
+});
+
+titleInput.addEventListener('input', function () {
+  var valueLength = titleInput.value.length;
+
+  if (valueLength < minTitleLength) {
+    titleInput.setCustomValidity('Ещё ' + (minTitleLength - valueLength) + ' симв.');
+  } else if (valueLength > maxTitleLength) {
+    titleInput.setCustomValidity('Удалите лишние ' + (valueLength - maxTitleLength) + ' симв.');
+  } else {
+    titleInput.setCustomValidity('');
+  }
+});
+
+
+// ТИП
+typeSelect.addEventListener('change', function () {
+  var valueType = typeSelect.value;
+  if (valueType === 'bungalo') {
+    priceInput.min = '0';
+    priceInput.placeholder = '0';
+  } else if (valueType === 'flat') {
+    priceInput.min = '1000';
+    priceInput.placeholder = '1000';
+  } else if (valueType === 'house') {
+    priceInput.min = '5000';
+    priceInput.placeholder = '5000';
+  } else if (valueType === 'palace') {
+    priceInput.min = '10000';
+    priceInput.placeholder = '10000';
+  }
+});
+
+
+// ВРЕМЯ
+timeInSelect.addEventListener('change', function () {
+  var valueTimeIn = timeInSelect.value;
+  if (valueTimeIn === '12:00') {
+    timeOutSelect.value = '12:00';
+  } else if (valueTimeIn === '13:00') {
+    timeOutSelect.value = '13:00';
+  } else if (valueTimeIn === '14:00') {
+    timeOutSelect.value = '14:00';
+  }
+});
+
+timeOutSelect.addEventListener('change', function () {
+  var valueTimeOut = timeOutSelect.value;
+  if (valueTimeOut === '12:00') {
+    timeInSelect.value = '12:00';
+  } else if (valueTimeOut === '13:00') {
+    timeInSelect.value = '13:00';
+  } else if (valueTimeOut === '14:00') {
+    timeInSelect.value = '14:00';
+  }
+});
+
+
+// КОМНАТЫ И ГОСТИ
+roomSelect.addEventListener('change', function () {
+  var valueRoom = roomSelect.value;
+  if (valueRoom === '1') {
+    if (capacitySelect.value !== '1') {
+      capacitySelect.setCustomValidity('1 комната — для 1 гостя');
+    }
+  } else if (valueRoom === '2') {
+    if (capacitySelect.value !== '1' || capacitySelect.value !== '2') {
+      capacitySelect.setCustomValidity('2 комнаты — для 2 гостей или для 1 гостя');
+    }
+  } else if (valueRoom === '3') {
+    if (capacitySelect.value !== '1' || capacitySelect.value !== '2' || capacitySelect.value !== '3') {
+      capacitySelect.setCustomValidity('3 комнаты — для 3 гостей, для 2 гостей или для 1 гостя');
+    }
+  } else if (valueRoom === '100') {
+    if (capacitySelect.value !== '0') {
+      capacitySelect.setCustomValidity('100 комнат — не для гостей');
+    } else {
+      capacitySelect.setCustomValidity('');
+    }
+  }
+}
+);
 
 
 //  author
+
 function avatar(count) {
   var newArr = [];
   for (var i = 1; i <= count; i++) {
