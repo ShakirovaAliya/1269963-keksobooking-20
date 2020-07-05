@@ -13,52 +13,23 @@ var mapSelect = document.querySelectorAll('.ad-form select');
 var mapPinMain = document.querySelector('.map__pin--main');
 var mapFilter = document.querySelector('.map__filters');
 var formDisabled = document.querySelector('.ad-form--disabled');
-var minTitleLength = 30;
-var maxTitleLength = 100;
-var titleInput = document.querySelector('input[name="title"]');
-// var mainForm = document.querySelector('.ad-form');
-var addressInput = document.querySelector('input[name="address"]');
-var typeSelect = document.querySelector('select[name="type"]');
-var timeInSelect = document.querySelector('select[name="timein"]');
-var timeOutSelect = document.querySelector('select[name="timeout"]');
-var priceInput = document.querySelector('input[name="price"]');
-var roomSelect = document.querySelector('select[name="rooms"]');
-var capacitySelect = document.querySelector('select[name="capacity"]');
-
+var mainForm = document.querySelector('.ad-form');
+mainForm.method = 'post';
+mainForm.action = 'https://javascript.pages.academy/keksobooking';
+var noticeBlock = document.querySelector('.notice');
 
 // взяла из задания, но хз как использовать
 // var buttonPressed = instanceOfMouseEvent.button;
 
 
-// АКТИВНЫЙ РЕЖИМ
-mapPinMain.addEventListener('mousedown', function () {
-  mapVision.classList.remove('map--faded');
-  formDisabled.classList.remove('ad-form--disabled');
-  mapFilter.disabled = 'false';
-  mapInput.disabled = 'false';
-  mapSelect.disabled = 'false';
-}
-);
-
-
-mapPinMain.addEventListener('keydown', function (evt) {
-  if (evt.key === 'Enter') {
-    evt.preventDefault();
-    mapVision.classList.remove('map--faded');
-    formDisabled.classList.remove('ad-form--disabled');
-    mapFilter.disabled = 'false';
-    mapInput.disabled = 'false';
-    mapSelect.disabled = 'false';
-  }
-});
-
-
-// АДРЕС
-addressInput.disabled = true;
-
-
 // ЗАГОЛОВОК
-// здесь нужно invalid ставить на всю форму или только на инпут title? что-то разницы не заметила
+var titleInput = noticeBlock.querySelector('#title');
+var minTitleLength = 30;
+var maxTitleLength = 100;
+titleInput.minlength = '30';
+titleInput.maxlength = '100';
+titleInput.required = 'true';
+
 titleInput.addEventListener('invalid', function () {
   if (titleInput.validity.valueMissing) {
     titleInput.setCustomValidity('Обязательное поле');
@@ -79,10 +50,68 @@ titleInput.addEventListener('input', function () {
   }
 });
 
+// КОМНАТЫ И ГОСТИ
+var roomsNumber = noticeBlock.querySelector('#room_number');
+var capacityGuests = noticeBlock.querySelector('#capacity');
+//  создаю дефолтное значение для КОЛИЧЕСТВО КОМНАТ
+// создали елемент который будет заглушкой
+var defaultOptionItem = document.createElement('option');
+defaultOptionItem.innerHTML = 'выберите значение';
+defaultOptionItem.disabled = true;
+// по умолчанию он выбран
+defaultOptionItem.setAttribute('selected', true);
+//  создаю дефолтное значение длявыбоа количества мест и гостей
+var defaultOptionItemRooms = defaultOptionItem.cloneNode(true);
+var defaultOptionItemCapacity = defaultOptionItem.cloneNode(true);
+capacityGuests.appendChild(defaultOptionItemCapacity);
+roomsNumber.appendChild(defaultOptionItemRooms);
+// суть метода в том,что б при открытии страницы мы видели текст 'выберите значение' и потом уже от выбранного значения отталкивались при валидации
+roomsNumber.addEventListener('change', function () {
+  var valueRoom = roomsNumber.value;
+
+  if (valueRoom === '1' && capacityGuests.value !== '1') {
+    capacityGuests.setCustomValidity('1 комната — для 1 гостя');
+  } else if (valueRoom === '2' && (capacityGuests.value !== '1' || capacityGuests.value !== '2')) {
+    capacityGuests.setCustomValidity('2 комнаты — для 2 гостей или для 1 гостя');
+  } else if (valueRoom === '3' && (capacityGuests.value !== '1' || capacityGuests.value !== '2' || capacityGuests.value !== '3')) {
+    capacityGuests.setCustomValidity('3 комнаты — для 3 гостей, для 2 гостей или для 1 гостя');
+  } else if (valueRoom === '100' && capacityGuests.value !== '0') {
+    capacityGuests.setCustomValidity('100 комнат — не для гостей');
+  } else {
+    capacityGuests.setCustomValidity('');
+    valueRoom.setCustomValidity('');
+  }
+}
+);
+
+capacityGuests.addEventListener('change', function () {
+  var valueCapacity = capacityGuests.value;
+  if (valueCapacity === '1' && (roomsNumber.value !== '1' || roomsNumber.value !== '2' || roomsNumber.value !== '3')) {
+    roomsNumber.setCustomValidity('для 1го гостя - 1, 2 или 3 комнаты');
+  } else if (valueCapacity === '2' && (roomsNumber.value !== '2' || roomsNumber.value !== '3')) {
+    roomsNumber.setCustomValidity('для 2х гостей - 2 или 3 комнаты');
+  } else if (valueCapacity === '3' && roomsNumber.value !== '3') {
+    roomsNumber.setCustomValidity('для 3х гостей - только 3 комнаты');
+  } else if (valueCapacity === '0' && roomsNumber.value !== '100') {
+    roomsNumber.setCustomValidity('не для гостей - 100 комнат');
+  } else {
+    roomsNumber.setCustomValidity('');
+    valueCapacity.setCustomValidity('');
+  }
+}
+);
 
 // ТИП
-typeSelect.addEventListener('change', function () {
-  var valueType = typeSelect.value;
+var houseType = noticeBlock.querySelector('#type');
+var priceInput = noticeBlock.querySelector('#price');
+priceInput.min = '0';
+priceInput.max = '1000000';
+priceInput.required = 'true';
+var defaultOptionItemType = defaultOptionItem.cloneNode(true);
+houseType.appendChild(defaultOptionItemType);
+
+houseType.addEventListener('change', function () {
+  var valueType = houseType.value;
   if (valueType === 'bungalo') {
     priceInput.min = '0';
     priceInput.placeholder = '0';
@@ -98,8 +127,9 @@ typeSelect.addEventListener('change', function () {
   }
 });
 
-
 // ВРЕМЯ
+var timeInSelect = noticeBlock.querySelector('#timein');
+var timeOutSelect = noticeBlock.querySelector('#timeout');
 timeInSelect.addEventListener('change', function () {
   var valueTimeIn = timeInSelect.value;
   if (valueTimeIn === '12:00') {
@@ -121,33 +151,6 @@ timeOutSelect.addEventListener('change', function () {
     timeInSelect.value = '14:00';
   }
 });
-
-
-// КОМНАТЫ И ГОСТИ
-roomSelect.addEventListener('change', function () {
-  var valueRoom = roomSelect.value;
-  if (valueRoom === '1') {
-    if (capacitySelect.value !== '1') {
-      capacitySelect.setCustomValidity('1 комната — для 1 гостя');
-    }
-  } else if (valueRoom === '2') {
-    if (capacitySelect.value !== '1' || capacitySelect.value !== '2') {
-      capacitySelect.setCustomValidity('2 комнаты — для 2 гостей или для 1 гостя');
-    }
-  } else if (valueRoom === '3') {
-    if (capacitySelect.value !== '1' || capacitySelect.value !== '2' || capacitySelect.value !== '3') {
-      capacitySelect.setCustomValidity('3 комнаты — для 3 гостей, для 2 гостей или для 1 гостя');
-    }
-  } else if (valueRoom === '100') {
-    if (capacitySelect.value !== '0') {
-      capacitySelect.setCustomValidity('100 комнат — не для гостей');
-    } else {
-      capacitySelect.setCustomValidity('');
-    }
-  }
-}
-);
-
 
 //  author
 
@@ -243,10 +246,11 @@ var createPin = function (properties) {
   PinElement.querySelector('img').setAttribute('alt', 'Некий альтернативный текст');
   return PinElement;
 };
+
+similarMapPinTemplate.hidden = 'true';
 var fragment = document.createDocumentFragment();
 for (var i = 0; i < similarAds.length; i++) {
   fragment.appendChild(createPin(similarAds[i]));
-
 }
 mapPin.appendChild(fragment);
 
@@ -270,12 +274,40 @@ var createCard = function (ads) {
   cardPhoto.innerHTML = '';
   ads.offer.photos.forEach(function (element) {
     if (element) {
-      cardPhoto.innerHTML += '<img src="' + element + '" class="popup__photo" width="45" height="40" alt="Фотография жилья">';
+      cardPhoto.innerHTML += '<img src="' + element + '"class="popup__photo" width="45" height="40" alt="Фотография жилья">';
     }
   });
   return card;
 };
+similarCardTemplate.hidden = 'true';
 
 var mapContainer = document.querySelector('.map__filters-container');
 mapVision.insertBefore(createCard(similarAds[0]), mapContainer);
 
+// АДРЕС addressInput.disabled = 'true';
+var addressInput = noticeBlock.querySelector('#address');
+addressInput.innerHTML = 'properties.location.x + px, properties.location.y + px';
+
+
+// АКТИВНЫЙ РЕЖИМ
+mapPinMain.addEventListener('mousedown', function () {
+  mapVision.classList.remove('map--faded');
+  formDisabled.classList.remove('ad-form--disabled');
+  mapFilter.disabled = 'false';
+  mapInput.disabled = 'false';
+  mapSelect.disabled = 'false';
+  similarMapPinTemplate.hidden = 'false';
+}
+);
+
+mapPinMain.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    evt.preventDefault();
+    mapVision.classList.remove('map--faded');
+    formDisabled.classList.remove('ad-form--disabled');
+    mapFilter.disabled = 'false';
+    mapInput.disabled = 'false';
+    mapSelect.disabled = 'false';
+    similarMapPinTemplate.hidden = 'false';
+  }
+});
