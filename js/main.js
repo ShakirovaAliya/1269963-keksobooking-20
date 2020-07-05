@@ -53,14 +53,16 @@ titleInput.addEventListener('input', function () {
 // КОМНАТЫ И ГОСТИ
 var roomsNumber = noticeBlock.querySelector('#room_number');
 var capacityGuests = noticeBlock.querySelector('#capacity');
+
 //  создаю дефолтное значение для КОЛИЧЕСТВО КОМНАТ
 // создали елемент который будет заглушкой
 var defaultOptionItem = document.createElement('option');
 defaultOptionItem.innerHTML = 'выберите значение';
 defaultOptionItem.disabled = true;
+defaultOptionItem.value = '99'; // < ==== добавил value для валидации
 // по умолчанию он выбран
 defaultOptionItem.setAttribute('selected', true);
-//  создаю дефолтное значение длявыбоа количества мест и гостей
+//  создаю дефолтное значение для выбора количества мест и гостей
 var defaultOptionItemRooms = defaultOptionItem.cloneNode(true);
 var defaultOptionItemCapacity = defaultOptionItem.cloneNode(true);
 capacityGuests.appendChild(defaultOptionItemCapacity);
@@ -68,36 +70,53 @@ roomsNumber.appendChild(defaultOptionItemRooms);
 // суть метода в том,что б при открытии страницы мы видели текст 'выберите значение' и потом уже от выбранного значения отталкивались при валидации
 roomsNumber.addEventListener('change', function () {
   var valueRoom = roomsNumber.value;
-
-  if (valueRoom === '1' && capacityGuests.value !== '1') {
-    capacityGuests.setCustomValidity('1 комната — для 1 гостя');
-  } else if (valueRoom === '2' && (capacityGuests.value !== '1' || capacityGuests.value !== '2')) {
-    capacityGuests.setCustomValidity('2 комнаты — для 2 гостей или для 1 гостя');
-  } else if (valueRoom === '3' && (capacityGuests.value !== '1' || capacityGuests.value !== '2' || capacityGuests.value !== '3')) {
-    capacityGuests.setCustomValidity('3 комнаты — для 3 гостей, для 2 гостей или для 1 гостя');
+  var errorMessage = '';
+  if (valueRoom && capacityGuests.value === '99') {
+    errorMessage = 'укажите кол-во гостей';
+  } else if (valueRoom === '1' && capacityGuests.value !== '1') {
+    errorMessage = '1 комната — для 1 гостя';
+  } else if (valueRoom === '2' && !(capacityGuests.value === '1' || capacityGuests.value === '2')) {
+    errorMessage = '2 комнаты — для 2 гостей или для 1 гостя';
+  } else if (valueRoom === '3' && !(capacityGuests.value === '1' || capacityGuests.value === '2' || capacityGuests.value === '3')) {
+    errorMessage = '3 комнаты — для 3 гостей, для 2 гостей или для 1 гостя';
   } else if (valueRoom === '100' && capacityGuests.value !== '0') {
-    capacityGuests.setCustomValidity('100 комнат — не для гостей');
+    errorMessage = '100 комнат — не для гостей';
   } else {
-    capacityGuests.setCustomValidity('');
-    valueRoom.setCustomValidity('');
+    errorMessage = '';
   }
-}
-);
+
+  // debugger;
+  // capacityGuests.setCustomValidity('');
+  // roomsNumber.setCustomValidity(errorMessage);
+
+  capacityGuests.setCustomValidity(errorMessage);
+  roomsNumber.setCustomValidity(errorMessage);
+
+});
 
 capacityGuests.addEventListener('change', function () {
   var valueCapacity = capacityGuests.value;
-  if (valueCapacity === '1' && (roomsNumber.value !== '1' || roomsNumber.value !== '2' || roomsNumber.value !== '3')) {
-    roomsNumber.setCustomValidity('для 1го гостя - 1, 2 или 3 комнаты');
-  } else if (valueCapacity === '2' && (roomsNumber.value !== '2' || roomsNumber.value !== '3')) {
-    roomsNumber.setCustomValidity('для 2х гостей - 2 или 3 комнаты');
+  var errorMessage = '';
+  if (valueCapacity && roomsNumber.value === '99') {
+    errorMessage = 'укажите кол-во комнат';
+  } else if (valueCapacity === '1' && !(roomsNumber.value === '1' || roomsNumber.value === '2' || roomsNumber.value === '3')) {
+    errorMessage = 'для 1го гостя - 1, 2 или 3 комнаты';
+  } else if (valueCapacity === '2' && !(roomsNumber.value === '2' || roomsNumber.value === '3')) {
+    errorMessage = 'для 2х гостей - 2 или 3 комнаты';
   } else if (valueCapacity === '3' && roomsNumber.value !== '3') {
-    roomsNumber.setCustomValidity('для 3х гостей - только 3 комнаты');
+    errorMessage = 'для 3х гостей - только 3 комнаты';
   } else if (valueCapacity === '0' && roomsNumber.value !== '100') {
-    roomsNumber.setCustomValidity('не для гостей - 100 комнат');
+    errorMessage = 'не для гостей - 100 комнат';
   } else {
-    roomsNumber.setCustomValidity('');
-    valueCapacity.setCustomValidity('');
+    errorMessage = '';
   }
+
+  // debugger
+  // roomsNumber.setCustomValidity('');
+  // capacityGuests.setCustomValidity(errorMessage);
+
+  roomsNumber.setCustomValidity(errorMessage);
+  capacityGuests.setCustomValidity(errorMessage);
 }
 );
 
@@ -236,24 +255,6 @@ function generatePinArray(count) {
 }
 var similarAds = generatePinArray(8);
 
-
-var similarMapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
-var createPin = function (properties) {
-  var PinElement = similarMapPinTemplate.cloneNode(true);
-  PinElement.style.top = properties.location.y + 'px';
-  PinElement.style.left = properties.location.x + 'px';
-  PinElement.querySelector('img').setAttribute('src', properties.author.avatar);
-  PinElement.querySelector('img').setAttribute('alt', 'Некий альтернативный текст');
-  return PinElement;
-};
-
-similarMapPinTemplate.hidden = 'true';
-var fragment = document.createDocumentFragment();
-for (var i = 0; i < similarAds.length; i++) {
-  fragment.appendChild(createPin(similarAds[i]));
-}
-mapPin.appendChild(fragment);
-
 var similarCardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 var createCard = function (ads) {
   var card = similarCardTemplate.cloneNode(true);
@@ -284,22 +285,36 @@ similarCardTemplate.hidden = 'true';
 var mapContainer = document.querySelector('.map__filters-container');
 mapVision.insertBefore(createCard(similarAds[0]), mapContainer);
 
-// АДРЕС addressInput.disabled = 'true';
-var addressInput = noticeBlock.querySelector('#address');
-addressInput.innerHTML = 'properties.location.x + px, properties.location.y + px';
+var similarMapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+var createPin = function (properties) {
+  var PinElement = similarMapPinTemplate.cloneNode(true);
+  var addressInput = noticeBlock.querySelector('#address');
+  addressInput.disabled = 'true';
+  PinElement.style.top = properties.location.y + 'px';
+  PinElement.style.left = properties.location.x + 'px';
+
+  addressInput.value = properties.location.x + ',' + properties.location.y;
+
+  PinElement.querySelector('img').setAttribute('src', properties.author.avatar);
+  PinElement.querySelector('img').setAttribute('alt', 'Некий альтернативный текст');
+  return PinElement;
+};
 
 
 // АКТИВНЫЙ РЕЖИМ
+
 mapPinMain.addEventListener('mousedown', function () {
   mapVision.classList.remove('map--faded');
   formDisabled.classList.remove('ad-form--disabled');
   mapFilter.disabled = 'false';
   mapInput.disabled = 'false';
   mapSelect.disabled = 'false';
-  similarMapPinTemplate.hidden = 'false';
-}
-);
-
+  var fragment = document.createDocumentFragment();
+  for (var i = 0; i < similarAds.length; i++) {
+    fragment.appendChild(createPin(similarAds[i]));
+  }
+  mapPin.appendChild(fragment);
+});
 mapPinMain.addEventListener('keydown', function (evt) {
   if (evt.key === 'Enter') {
     evt.preventDefault();
@@ -308,6 +323,6 @@ mapPinMain.addEventListener('keydown', function (evt) {
     mapFilter.disabled = 'false';
     mapInput.disabled = 'false';
     mapSelect.disabled = 'false';
-    similarMapPinTemplate.hidden = 'false';
   }
 });
+
