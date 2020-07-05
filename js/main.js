@@ -288,13 +288,8 @@ mapVision.insertBefore(createCard(similarAds[0]), mapContainer);
 var similarMapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 var createPin = function (properties) {
   var PinElement = similarMapPinTemplate.cloneNode(true);
-  var addressInput = noticeBlock.querySelector('#address');
-  addressInput.disabled = 'true';
   PinElement.style.top = properties.location.y + 'px';
   PinElement.style.left = properties.location.x + 'px';
-
-  addressInput.value = properties.location.x + ',' + properties.location.y;
-
   PinElement.querySelector('img').setAttribute('src', properties.author.avatar);
   PinElement.querySelector('img').setAttribute('alt', 'Некий альтернативный текст');
   return PinElement;
@@ -309,12 +304,16 @@ mapPinMain.addEventListener('mousedown', function () {
   mapFilter.disabled = 'false';
   mapInput.disabled = 'false';
   mapSelect.disabled = 'false';
+  var addressInput = noticeBlock.querySelector('#address');
+  addressInput.disabled = 'true';
+  addressInput.value = mapPinMain.offsetLeft + ',' + mapPinMain.offsetTop;
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < similarAds.length; i++) {
     fragment.appendChild(createPin(similarAds[i]));
   }
   mapPin.appendChild(fragment);
 });
+
 mapPinMain.addEventListener('keydown', function (evt) {
   if (evt.key === 'Enter') {
     evt.preventDefault();
