@@ -330,6 +330,7 @@ mapPinMain.addEventListener('mousedown', function () {
   imagesInput.disabled = false;
   buttonSubmit.disabled = false;
   addressInput.readOnly = true;
+  addressInput.disabled = false;
   addressInput.value = mapPinMain.offsetLeft + ',' + mapPinMain.offsetTop;
   for (var i = 0; i < similarAds.length; i++) {
     fragment.appendChild(createPin(similarAds[i]));
@@ -355,6 +356,7 @@ mapPinMain.addEventListener('keydown', function (evt) {
     imagesInput.disabled = false;
     buttonSubmit.disabled = false;
     addressInput.readOnly = true;
+    addressInput.disabled = false;
     addressInput.value = mapPinMain.offsetLeft + ',' + mapPinMain.offsetTop;
     for (var i = 0; i < similarAds.length; i++) {
       fragment.appendChild(createPin(similarAds[i]));
