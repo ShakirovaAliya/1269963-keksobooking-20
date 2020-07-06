@@ -305,7 +305,7 @@ mapPinMain.addEventListener('mousedown', function () {
   mapInput.disabled = 'false';
   mapSelect.disabled = 'false';
   var addressInput = noticeBlock.querySelector('#address');
-  addressInput.disabled = 'true';
+  addressInput.readOnly = 'true';
   addressInput.value = mapPinMain.offsetLeft + ',' + mapPinMain.offsetTop;
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < similarAds.length; i++) {
