@@ -8,8 +8,6 @@ var pinHeight = pin.offsetHeight;
 var maxCoast = 600;
 var maxRoomsCount = 4;
 var maxGuestsCount = 10;
-var mapInput = document.querySelectorAll('.ad-form input');
-var mapSelect = document.querySelectorAll('.ad-form select');
 var mapPinMain = document.querySelector('.map__pin--main');
 var mapFilter = document.querySelector('.map__filters');
 var formDisabled = document.querySelector('.ad-form--disabled');
@@ -18,18 +16,18 @@ mainForm.method = 'post';
 mainForm.action = 'https://javascript.pages.academy/keksobooking';
 var noticeBlock = document.querySelector('.notice');
 
+
 // взяла из задания, но хз как использовать
 // var buttonPressed = instanceOfMouseEvent.button;
 
-
 // ЗАГОЛОВОК
 var titleInput = noticeBlock.querySelector('#title');
+titleInput.disabled = true;
 var minTitleLength = 30;
 var maxTitleLength = 100;
 titleInput.minlength = '30';
 titleInput.maxlength = '100';
 titleInput.required = 'true';
-
 titleInput.addEventListener('invalid', function () {
   if (titleInput.validity.valueMissing) {
     titleInput.setCustomValidity('Обязательное поле');
@@ -40,7 +38,6 @@ titleInput.addEventListener('invalid', function () {
 
 titleInput.addEventListener('input', function () {
   var valueLength = titleInput.value.length;
-
   if (valueLength < minTitleLength) {
     titleInput.setCustomValidity('Ещё ' + (minTitleLength - valueLength) + ' симв.');
   } else if (valueLength > maxTitleLength) {
@@ -53,21 +50,20 @@ titleInput.addEventListener('input', function () {
 // КОМНАТЫ И ГОСТИ
 var roomsNumber = noticeBlock.querySelector('#room_number');
 var capacityGuests = noticeBlock.querySelector('#capacity');
+roomsNumber.setAttribute('disabled', 'true');
+capacityGuests.setAttribute('disabled', 'true');
 
-//  создаю дефолтное значение для КОЛИЧЕСТВО КОМНАТ
-// создали елемент который будет заглушкой
 var defaultOptionItem = document.createElement('option');
 defaultOptionItem.innerHTML = 'выберите значение';
 defaultOptionItem.disabled = true;
-defaultOptionItem.value = '99'; // < ==== добавил value для валидации
-// по умолчанию он выбран
+defaultOptionItem.value = '99';
 defaultOptionItem.setAttribute('selected', true);
 //  создаю дефолтное значение для выбора количества мест и гостей
 var defaultOptionItemRooms = defaultOptionItem.cloneNode(true);
 var defaultOptionItemCapacity = defaultOptionItem.cloneNode(true);
 capacityGuests.appendChild(defaultOptionItemCapacity);
 roomsNumber.appendChild(defaultOptionItemRooms);
-// суть метода в том,что б при открытии страницы мы видели текст 'выберите значение' и потом уже от выбранного значения отталкивались при валидации
+
 roomsNumber.addEventListener('change', function () {
   var valueRoom = roomsNumber.value;
   var errorMessage = '';
@@ -84,10 +80,6 @@ roomsNumber.addEventListener('change', function () {
   } else {
     errorMessage = '';
   }
-
-  // debugger;
-  // capacityGuests.setCustomValidity('');
-  // roomsNumber.setCustomValidity(errorMessage);
 
   capacityGuests.setCustomValidity(errorMessage);
   roomsNumber.setCustomValidity(errorMessage);
@@ -111,10 +103,6 @@ capacityGuests.addEventListener('change', function () {
     errorMessage = '';
   }
 
-  // debugger
-  // roomsNumber.setCustomValidity('');
-  // capacityGuests.setCustomValidity(errorMessage);
-
   roomsNumber.setCustomValidity(errorMessage);
   capacityGuests.setCustomValidity(errorMessage);
 }
@@ -123,6 +111,8 @@ capacityGuests.addEventListener('change', function () {
 // ТИП
 var houseType = noticeBlock.querySelector('#type');
 var priceInput = noticeBlock.querySelector('#price');
+houseType.setAttribute('disabled', 'true');
+priceInput.setAttribute('disabled', 'true');
 priceInput.min = '0';
 priceInput.max = '1000000';
 priceInput.required = 'true';
@@ -149,6 +139,8 @@ houseType.addEventListener('change', function () {
 // ВРЕМЯ
 var timeInSelect = noticeBlock.querySelector('#timein');
 var timeOutSelect = noticeBlock.querySelector('#timeout');
+var time = noticeBlock.querySelector('.ad-form__element--time');
+time.disabled = true;
 timeInSelect.addEventListener('change', function () {
   var valueTimeIn = timeInSelect.value;
   if (valueTimeIn === '12:00') {
@@ -295,19 +287,50 @@ var createPin = function (properties) {
   return PinElement;
 };
 
+// АВАТАР
+var avatarInput = noticeBlock.querySelector('.ad-form-header');
+avatarInput.disabled = true;
+
+// ФОТО ЖИЛЬЯ
+var imagesInput = noticeBlock.querySelector('#images');
+imagesInput.disabled = true;
+
+// ОПИСАНИЕ
+var descriptionText = noticeBlock.querySelector('#description');
+descriptionText.disabled = true;
+
+// УДОБСТВА
+var features = noticeBlock.querySelector('.features');
+features.disabled = true;
+
+// АДРЕС
+var addressInput = noticeBlock.querySelector('#address');
+addressInput.disabled = true;
+
+// КНОПКИ
+var buttonSubmit = noticeBlock.querySelector('.ad-form__element--submit');
+buttonSubmit.disabled = true;
 
 // АКТИВНЫЙ РЕЖИМ
+var fragment = document.createDocumentFragment();
 
 mapPinMain.addEventListener('mousedown', function () {
   mapVision.classList.remove('map--faded');
   formDisabled.classList.remove('ad-form--disabled');
-  mapFilter.disabled = 'false';
-  mapInput.disabled = 'false';
-  mapSelect.disabled = 'false';
-  var addressInput = noticeBlock.querySelector('#address');
-  addressInput.readOnly = 'true';
+  mapFilter.disabled = false;
+  titleInput.disabled = false;
+  roomsNumber.removeAttribute('disabled', 'true');
+  capacityGuests.removeAttribute('disabled', 'true');
+  houseType.removeAttribute('disabled', 'true');
+  priceInput.removeAttribute('disabled', 'true');
+  time.disabled = false;
+  descriptionText.disabled = false;
+  features.disabled = false;
+  avatarInput.disabled = false;
+  imagesInput.disabled = false;
+  buttonSubmit.disabled = false;
+  addressInput.readOnly = true;
   addressInput.value = mapPinMain.offsetLeft + ',' + mapPinMain.offsetTop;
-  var fragment = document.createDocumentFragment();
   for (var i = 0; i < similarAds.length; i++) {
     fragment.appendChild(createPin(similarAds[i]));
   }
@@ -319,9 +342,25 @@ mapPinMain.addEventListener('keydown', function (evt) {
     evt.preventDefault();
     mapVision.classList.remove('map--faded');
     formDisabled.classList.remove('ad-form--disabled');
-    mapFilter.disabled = 'false';
-    mapInput.disabled = 'false';
-    mapSelect.disabled = 'false';
+    mapFilter.disabled = false;
+    titleInput.disabled = false;
+    roomsNumber.removeAttribute('disabled', 'true');
+    capacityGuests.removeAttribute('disabled', 'true');
+    houseType.removeAttribute('disabled', 'true');
+    priceInput.removeAttribute('disabled', 'true');
+    time.disabled = false;
+    descriptionText.disabled = false;
+    features.disabled = false;
+    avatarInput.disabled = false;
+    imagesInput.disabled = false;
+    buttonSubmit.disabled = false;
+    addressInput.readOnly = true;
+    addressInput.value = mapPinMain.offsetLeft + ',' + mapPinMain.offsetTop;
+    for (var i = 0; i < similarAds.length; i++) {
+      fragment.appendChild(createPin(similarAds[i]));
+    }
+    mapPin.appendChild(fragment);
   }
 });
+
 
