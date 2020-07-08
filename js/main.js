@@ -17,9 +17,6 @@ mainForm.action = 'https://javascript.pages.academy/keksobooking';
 var noticeBlock = document.querySelector('.notice');
 
 
-// взяла из задания, но хз как использовать
-// var buttonPressed = instanceOfMouseEvent.button;
-
 // ЗАГОЛОВОК
 var titleInput = noticeBlock.querySelector('#title');
 titleInput.disabled = true;
