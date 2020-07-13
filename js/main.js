@@ -17,9 +17,6 @@ mainForm.action = 'https://javascript.pages.academy/keksobooking';
 var noticeBlock = document.querySelector('.notice');
 
 
-// взяла из задания, но хз как использовать
-// var buttonPressed = instanceOfMouseEvent.button;
-
 // ЗАГОЛОВОК
 var titleInput = noticeBlock.querySelector('#title');
 titleInput.disabled = true;
@@ -58,7 +55,7 @@ defaultOptionItem.innerHTML = 'выберите значение';
 defaultOptionItem.disabled = true;
 defaultOptionItem.value = '99';
 defaultOptionItem.setAttribute('selected', true);
-//  создаю дефолтное значение для выбора количества мест и гостей
+// дефолтное значение для выбора количества мест и гостей
 var defaultOptionItemRooms = defaultOptionItem.cloneNode(true);
 var defaultOptionItemCapacity = defaultOptionItem.cloneNode(true);
 capacityGuests.appendChild(defaultOptionItemCapacity);
@@ -217,7 +214,6 @@ var photosArray = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http:/
 
 
 function generatePinArray(count) {
-
   var arr = [];
   for (var i = 0; i < count; i++) {
     arr.push({
@@ -235,17 +231,35 @@ function generatePinArray(count) {
         checkout: checkArray[0 + Math.floor(Math.random() * (checkArray.length - 0))],
         features: featuresArray.slice(getRandomInt(featuresArray.length)),
         description: 'Великолепная квартира-студия в центре Токио. Подходит как туристам, так и бизнесменам. Квартира полностью укомплектована и недавно отремонтирована.',
-        photos: photosArray.slice(getRandomInt(photosArray.length))
+        photos: photosArray.slice(getRandomInt(photosArray.length)),
       },
       location: {
         x: locations[i].x,
         y: locations[i].y
-      }
+      },
+      id: i,
     });
   }
+
   return arr;
 }
+
 var similarAds = generatePinArray(8);
+
+
+var similarMapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+var createPin = function (properties) {
+  var PinElement = similarMapPinTemplate.cloneNode(true);
+  PinElement.style.top = properties.location.y + 'px';
+  PinElement.style.left = properties.location.x + 'px';
+  PinElement.dataset.id = properties.id;
+  PinElement.querySelector('img').setAttribute('src', properties.author.avatar);
+  PinElement.querySelector('img').classList.add('popup_img');
+  PinElement.querySelector('img').dataset.id = properties.id;
+  PinElement.querySelector('img').setAttribute('alt', 'Некий альтернативный текст');
+  return PinElement;
+};
+
 
 var similarCardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 var createCard = function (ads) {
@@ -272,20 +286,8 @@ var createCard = function (ads) {
   });
   return card;
 };
-similarCardTemplate.hidden = 'true';
-
 var mapContainer = document.querySelector('.map__filters-container');
-mapVision.insertBefore(createCard(similarAds[0]), mapContainer);
 
-var similarMapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
-var createPin = function (properties) {
-  var PinElement = similarMapPinTemplate.cloneNode(true);
-  PinElement.style.top = properties.location.y + 'px';
-  PinElement.style.left = properties.location.x + 'px';
-  PinElement.querySelector('img').setAttribute('src', properties.author.avatar);
-  PinElement.querySelector('img').setAttribute('alt', 'Некий альтернативный текст');
-  return PinElement;
-};
 
 // АВАТАР
 var avatarInput = noticeBlock.querySelector('.ad-form-header');
@@ -366,3 +368,20 @@ mapPinMain.addEventListener('keydown', function (evt) {
 });
 
 
+function getId(evt) {
+
+  var target = evt.target;
+  // завели переменную в которую запишем значение найденой карточки для отрисвки попапа
+  var dataPopup;
+  if (target.className === 'map__pin' || target.className === 'popup_img') {
+    var pinId = target.dataset.id; // узнаем id пина по которому кликнули
+    // дальше с помощью метода find() массива ищем елемент с id  который мы записали в переменную pinId
+    dataPopup = similarAds.find(function (element) {
+      return element.id === Number(pinId);
+    });
+
+    mapVision.insertBefore(createCard(dataPopup), mapContainer);
+  }
+}
+
+document.addEventListener('click', getId);
