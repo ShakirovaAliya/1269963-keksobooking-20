@@ -381,7 +381,19 @@ function getId(evt) {
     });
 
     mapVision.insertBefore(createCard(dataPopup), mapContainer);
+  } else if (evt.key === 'Enter') {
+    mapVision.insertBefore(createCard(dataPopup), mapContainer);
+  } else if (evt.key === 'Escape') {
+    createCard();
   }
+
 }
 
 document.addEventListener('click', getId);
+
+/* var closePopup = document.querySelector('.popup__close');
+var mapCard = document.querySelectorAll('.map__card');
+closePopup.addEventListener('click', function () {
+  mapCard.hidden = true;
+});
+*/
