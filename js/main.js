@@ -284,8 +284,11 @@ var createCard = function (ads) {
       cardPhoto.innerHTML += '<img src="' + element + '"class="popup__photo" width="45" height="40" alt="Фотография жилья">';
     }
   });
+
   return card;
 };
+
+
 var mapContainer = document.querySelector('.map__filters-container');
 
 
@@ -367,33 +370,34 @@ mapPinMain.addEventListener('keydown', function (evt) {
   }
 });
 
-
+var mapCard = document.querySelector('.map__card');
+// дальше создал функцию которая на основании данных id нажатого пина находила бы нам полный обьект предложения что б мы могли на основании его отрисовать попап
 function getId(evt) {
 
   var target = evt.target;
   // завели переменную в которую запишем значение найденой карточки для отрисвки попапа
   var dataPopup;
+  // узнаем на пин ли мы кликнули проверив класс елемента по которому кликнули
   if (target.className === 'map__pin' || target.className === 'popup_img') {
+    // если мы нажали на button либо img то считываем их dataset.id (уникальное значение)
     var pinId = target.dataset.id; // узнаем id пина по которому кликнули
-    // дальше с помощью метода find() массива ищем елемент с id  который мы записали в переменную pinId
     dataPopup = similarAds.find(function (element) {
       return element.id === Number(pinId);
     });
 
+    if (mapCard) {
+      mapCard.remove();
+    }
     mapVision.insertBefore(createCard(dataPopup), mapContainer);
+    var closeButton = document.querySelector('.popup__close');
+    closeButton.addEventListener('click', function () {
+      mapCard.remove();
+    });
+
   } else if (evt.key === 'Enter') {
     mapVision.insertBefore(createCard(dataPopup), mapContainer);
-  } else if (evt.key === 'Escape') {
-    createCard();
   }
-
 }
 
 document.addEventListener('click', getId);
 
-/* var closePopup = document.querySelector('.popup__close');
-var mapCard = document.querySelectorAll('.map__card');
-closePopup.addEventListener('click', function () {
-  mapCard.hidden = true;
-});
-*/
