@@ -370,7 +370,7 @@ mapPinMain.addEventListener('keydown', function (evt) {
   }
 });
 
-
+var mapCard = document.querySelector('.map__card');
 function getId(evt) {
 
   var target = evt.target;
@@ -383,7 +383,7 @@ function getId(evt) {
     dataPopup = similarAds.find(function (element) {
       return element.id === Number(pinId);
     });
-    var mapCard = document.querySelector('.map__card');
+
     if (mapCard) {
       mapCard.remove();
     }
@@ -404,3 +404,11 @@ function getId(evt) {
 
 document.addEventListener('click', getId);
 
+
+
+  document.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Escape') {
+    mapCard = document.querySelector('.map__card');
+    mapCard.remove();
+  };
+});
