@@ -370,32 +370,35 @@ mapPinMain.addEventListener('keydown', function (evt) {
   }
 });
 
-var mapCard = document.querySelector('.map__card');
-// дальше создал функцию которая на основании данных id нажатого пина находила бы нам полный обьект предложения что б мы могли на основании его отрисовать попап
+
 function getId(evt) {
 
   var target = evt.target;
-  // завели переменную в которую запишем значение найденой карточки для отрисвки попапа
+
   var dataPopup;
-  // узнаем на пин ли мы кликнули проверив класс елемента по которому кликнули
+
   if (target.className === 'map__pin' || target.className === 'popup_img') {
-    // если мы нажали на button либо img то считываем их dataset.id (уникальное значение)
-    var pinId = target.dataset.id; // узнаем id пина по которому кликнули
+
+    var pinId = target.dataset.id;
     dataPopup = similarAds.find(function (element) {
       return element.id === Number(pinId);
     });
-
+    var mapCard = document.querySelector('.map__card');
     if (mapCard) {
       mapCard.remove();
     }
     mapVision.insertBefore(createCard(dataPopup), mapContainer);
+    mapCard = document.querySelector('.map__card');
     var closeButton = document.querySelector('.popup__close');
     closeButton.addEventListener('click', function () {
       mapCard.remove();
     });
-
   } else if (evt.key === 'Enter') {
     mapVision.insertBefore(createCard(dataPopup), mapContainer);
+    mapCard = document.querySelector('.map__card');
+    closeButton.addEventListener('click', function () {
+      mapCard.remove();
+    });
   }
 }
 
