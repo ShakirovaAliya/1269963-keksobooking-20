@@ -404,10 +404,12 @@ function getId(evt) {
 
 document.addEventListener('click', getId);
 
-
 document.addEventListener('keydown', function (evt) {
   if (evt.key === 'Escape') {
     mapCard = document.querySelector('.map__card');
-    mapCard.remove();
+    if (mapCard) {
+      mapCard.remove();
+    }
   }
 });
+
