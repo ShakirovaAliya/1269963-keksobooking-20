@@ -27,7 +27,6 @@
     return card;
   };
   window.card = {
-    similarCardTemplate: similarCardTemplate,
     createCard: createCard,
   };
 })();
