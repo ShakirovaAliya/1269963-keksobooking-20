@@ -80,6 +80,7 @@
 
       mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
       mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
+      window.form.addressInput.value = (mapPinMain.offsetLeft - shift.x) + ',' + (mapPinMain.offsetTop - shift.y);
     };
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
