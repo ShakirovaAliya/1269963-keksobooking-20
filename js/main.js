@@ -32,10 +32,10 @@
     mapPin.appendChild(fragment);
   };
 
-  mapPinMain.addEventListener('mousedown', function () {
+  /* mapPinMain.addEventListener('mousedown', function () {
     activePage();
   });
-
+  */
   mapPinMain.addEventListener('keydown', function (evt) {
     if (evt.key === 'Enter') {
       evt.preventDefault();
@@ -45,6 +45,7 @@
 
   mapPinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
+    activePage();
     var startCoords = {
       x: evt.clientX,
       y: evt.clientY
@@ -65,6 +66,9 @@
 
       if ((mapPinMain.offsetLeft - shift.x) <= (mapPinWidth - mapPinMainWidth / 2)) {
         mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
+      }
+      if ((mapPinMain.offsetRight - shift.x) >= (mapPinWidth - mapPinMainWidth / 2)) {
+        mapPinMain.style.right = (mapPinMain.offsetRight - shift.x) + 'px';
       }
       window.form.addressInput.value = (mapPinMain.offsetLeft - shift.x) + ',' + (mapPinMain.offsetTop - shift.y);
     };
