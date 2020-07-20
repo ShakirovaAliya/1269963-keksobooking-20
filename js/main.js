@@ -79,8 +79,8 @@
 
       if ((mapPinMain.offsetLeft - shift.x) <= (mapPinWidth - mapPinMainWidth / 2)) {
         mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
-      } else if ((mapPinMain.offsetLeft - shift.x) > (mapPinWidth - mapPinMainWidth / 2)) {
-        mapPinMain.style.left = (mapPinWidth - mapPinMainWidth / 2) + 'px';
+      } else {
+        mapPinMain.style.left = (0 - mapPinMainWidth / 2) + 'px';
       }
       addressInput.value = (mapPinMain.offsetLeft - shift.x) + ',' + (mapPinMain.offsetTop - shift.y);
     };
