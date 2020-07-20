@@ -70,15 +70,17 @@
         x: moveEvt.clientX,
         y: moveEvt.clientY
       };
-      if ((mapPinMain.offsetTop - shift.y) >= (130 - mapPinMainHeight) && (mapPinMain.offsetTop - shift.y) <= (630 - mapPinMainHeight)) {
+      var minY = 130;
+      var maxY = 630;
+
+      if ((mapPinMain.offsetTop - shift.y) >= (minY - mapPinMainHeight) && (mapPinMain.offsetTop - shift.y) <= (maxY - mapPinMainHeight)) {
         mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
       }
 
       if ((mapPinMain.offsetLeft - shift.x) <= (mapPinWidth - mapPinMainWidth / 2)) {
         mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
-      }
-      if ((mapPinMain.offsetLeft - shift.x) > (mapPinWidth - mapPinMainWidth / 2)) {
-        mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
+      } else if ((mapPinMain.offsetLeft - shift.x) > (mapPinWidth - mapPinMainWidth / 2)) {
+        mapPinMain.style.left = (mapPinWidth - mapPinMainWidth / 2) + 'px';
       }
       addressInput.value = (mapPinMain.offsetLeft - shift.x) + ',' + (mapPinMain.offsetTop - shift.y);
     };
