@@ -77,10 +77,10 @@
         mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
       }
 
-      if ((mapPinMain.offsetLeft - shift.x) < (mapPinWidth - mapPinMainWidth / 2)) {
+      if ((mapPinMain.offsetLeft - shift.x) <= (mapPinWidth - mapPinMainWidth / 2)) {
         mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
       }
-      if ((mapPinMain.offsetLeft - shift.x) > (mapPinWidth - mapPinMainWidth / 2)) {
+      if ((mapPinMain.offsetLeft - shift.x) <= 0) {
         mapPinMain.style.left = (0 - mapPinMainWidth / 2) + 'px';
       }
       addressInput.value = (mapPinMain.offsetLeft - shift.x) + ',' + (mapPinMain.offsetTop - shift.y);
