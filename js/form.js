@@ -187,19 +187,5 @@
       }
     }
   });
-  window.form = {
-    mapVision: mapVision,
-    titleInput: titleInput,
-    roomsNumber: roomsNumber,
-    capacityGuests: capacityGuests,
-    houseType: houseType,
-    priceInput: priceInput,
-    time: time,
-    descriptionText: descriptionText,
-    features: features,
-    avatarInput: avatarInput,
-    imagesInput: imagesInput,
-    buttonSubmit: buttonSubmit,
-    addressInput: addressInput
-  };
+
 })();
