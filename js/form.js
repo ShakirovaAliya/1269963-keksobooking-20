@@ -6,6 +6,7 @@
   var mainForm = document.querySelector('.ad-form');
   mainForm.method = 'post';
   mainForm.action = 'https://javascript.pages.academy/keksobooking';
+  var formDisabled = document.querySelector('.ad-form--disabled');
   var defaultOptionItem = document.createElement('option');
   defaultOptionItem.innerHTML = 'выберите значение';
   defaultOptionItem.disabled = true;
@@ -23,6 +24,14 @@
   addressInput.disabled = true;
   var buttonSubmit = noticeBlock.querySelector('.ad-form__element--submit');
   buttonSubmit.disabled = true;
+
+
+  mainForm.addEventListener('submit', function (evt) {
+    window.upload(new FormData(mainForm), function (response) {
+      formDisabled.classList.add('ad-form--disabled');
+    });
+    evt.preventDefault();
+  });
 
   var titleInput = noticeBlock.querySelector('#title');
   var minTitleLength = 30;
