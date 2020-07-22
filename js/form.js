@@ -28,15 +28,14 @@
 
 
   mainForm.addEventListener('submit', function (evt) {
-    window.upload(new FormData(mainForm), function (response) {
+    window.upload(new FormData(mainForm), function () {
       if (window.upload) {
-        var successMessage = document.querySelector('#success');
+        var successMessage = document.querySelector('#success').content.querySelector('.success');
         main.appendChild(successMessage);
 
       } else {
-        var errorMessage = document.querySelector('#error');
+        var errorMessage = document.querySelector('#error').content.querySelector('.error__message');
         main.appendChild(errorMessage);
-
       }
       formDisabled.classList.add('ad-form--disabled');
     });
