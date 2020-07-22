@@ -156,7 +156,7 @@
     var dataPopup;
     if (target.className === 'map__pin' || target.className === 'popup_img') {
       var pinId = target.dataset.id;
-      dataPopup = window.pin.similarAds.find(function (element) {
+      dataPopup = window.load(window.main.successHandler).find(function (element) {
         return element.id === Number(pinId);
       });
 

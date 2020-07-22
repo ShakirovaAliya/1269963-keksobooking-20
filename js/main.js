@@ -21,6 +21,16 @@
   var imagesInput = noticeBlock.querySelector('#images');
   var buttonSubmit = noticeBlock.querySelector('.ad-form__element--submit');
   var addressInput = noticeBlock.querySelector('#address');
+  var maxPinCount = 8;
+
+  var successHandler = function (pins) {
+    var fragment = document.createDocumentFragment();
+    for (var i = 0; i < maxPinCount; i++) {
+      fragment.appendChild(window.createpin.createPin(pins[i]));
+    }
+    mapPin.appendChild(fragment);
+  };
+
   var activePage = function () {
     mapVision.classList.remove('map--faded');
     formDisabled.classList.remove('ad-form--disabled');
@@ -39,11 +49,7 @@
     addressInput.readOnly = true;
     addressInput.disabled = false;
     addressInput.value = mapPinMain.offsetLeft + ',' + mapPinMain.offsetTop;
-    var fragment = document.createDocumentFragment();
-    for (var i = 0; i < window.pin.similarAds.length; i++) {
-      fragment.appendChild(window.createpin.createPin(window.pin.similarAds[i]));
-    }
-    mapPin.appendChild(fragment);
+    window.load(successHandler);
   };
 
   mapPinMain.addEventListener('keydown', function (evt) {
@@ -94,7 +100,7 @@
     document.addEventListener('mouseup', onMouseUp);
   }
   );
-}
-)();
-
-
+  window.main = {
+    successHandler: successHandler
+  };
+})();
