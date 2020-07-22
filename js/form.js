@@ -4,8 +4,9 @@
 (function () {
   var noticeBlock = document.querySelector('.notice');
   var mainForm = document.querySelector('.ad-form');
-  mainForm.method = 'post';
-  mainForm.action = 'https://javascript.pages.academy/keksobooking';
+  var main = document.querySelector('main');
+  // mainForm.method = 'post';
+  // mainForm.action = 'https://javascript.pages.academy/keksobooking';
   var formDisabled = document.querySelector('.ad-form--disabled');
   var defaultOptionItem = document.createElement('option');
   defaultOptionItem.innerHTML = 'выберите значение';
@@ -28,6 +29,15 @@
 
   mainForm.addEventListener('submit', function (evt) {
     window.upload(new FormData(mainForm), function (response) {
+      if (window.upload) {
+        var successMessage = document.querySelector('#success');
+        main.appendChild(successMessage);
+
+      } else {
+        var errorMessage = document.querySelector('#error');
+        main.appendChild(errorMessage);
+
+      }
       formDisabled.classList.add('ad-form--disabled');
     });
     evt.preventDefault();
