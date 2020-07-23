@@ -4,10 +4,8 @@
 (function () {
   var noticeBlock = document.querySelector('.notice');
   var mainForm = document.querySelector('.ad-form');
-  var main = document.querySelector('main');
   // mainForm.method = 'post';
   // mainForm.action = 'https://javascript.pages.academy/keksobooking';
-  var formDisabled = document.querySelector('.ad-form--disabled');
   var defaultOptionItem = document.createElement('option');
   defaultOptionItem.innerHTML = 'выберите значение';
   defaultOptionItem.disabled = true;
@@ -25,23 +23,24 @@
   addressInput.disabled = true;
   var buttonSubmit = noticeBlock.querySelector('.ad-form__element--submit');
   buttonSubmit.disabled = true;
+  var main = document.querySelector('main');
 
-
+  debugger
   mainForm.addEventListener('submit', function (evt) {
-    window.upload(new FormData(mainForm), function () {
-      if (window.upload) {
-        var successMessage = document.querySelector('#success').content.querySelector('.success');
-        main.appendChild(successMessage);
-
-      } else {
-        var errorMessage = document.querySelector('#error').content.querySelector('.error__message');
-        main.appendChild(errorMessage);
-      }
-      formDisabled.classList.add('ad-form--disabled');
+    window.upload(new FormData(mainForm), function (successMessage) {
+      var successM = document.querySelector('#success').content.querySelector('.success');
+      successM.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+      successM.style.position = 'absolute';
+      successM.style.left = 0;
+      successM.style.right = 0;
+      successM.style.fontSize = '30px';
+      successM.textContent = successMessage;
+      main.appendChild(successM);
+      // mainForm.classList.add('.ad-form--disabled');
     });
     evt.preventDefault();
   });
-
+debugger
   var titleInput = noticeBlock.querySelector('#title');
   var minTitleLength = 30;
   var maxTitleLength = 100;
@@ -169,12 +168,17 @@
   var mapVision = document.querySelector('.map');
   var mapCard = document.querySelector('.map__card');
   var mapContainer = document.querySelector('.map__filters-container');
+
+
   var getId = function (evt) {
     var target = evt.target;
     var dataPopup;
     if (target.className === 'map__pin' || target.className === 'popup_img') {
       var pinId = target.dataset.id;
-      dataPopup = window.load(window.main.successHandler).find(function (element) {
+      // в данной функции ни чего не изменилось кроме того,что поиск нужного
+      // елемента мы теперь проводим в массиве window.apartamentList
+      // который создали в функции successHandler файла main
+      dataPopup = window.apartamentList.find(function (element) {
         return element.id === Number(pinId);
       });
 
@@ -205,5 +209,5 @@
       }
     }
   });
-
 })();
+
