@@ -3,7 +3,7 @@
 (function () {
   var URL = 'https://javascript.pages.academy/keksobooking';
 
-  var upload = function (data, onSuccess) {
+  window.upload = function (data, onSuccess) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
@@ -14,7 +14,5 @@
     xhr.open('POST', URL);
     xhr.send(data);
   };
-  window.upload = {
-    upload: upload
-  };
+
 })();

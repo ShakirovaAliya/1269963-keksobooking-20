@@ -27,16 +27,10 @@
 
 
   mainForm.addEventListener('submit', function (evt) {
-    window.upload(new FormData(mainForm), function (successMessage) {
+    window.upload(new FormData(mainForm), function (response) {
       var successM = document.querySelector('#success').content.querySelector('.success');
-      successM.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
-      successM.style.position = 'absolute';
-      successM.style.left = 0;
-      successM.style.right = 0;
-      successM.style.fontSize = '30px';
-      successM.textContent = successMessage;
       main.appendChild(successM);
-      // mainForm.classList.add('.ad-form--disabled');
+      mainForm.classList.add('.ad-form--disabled');
     });
     evt.preventDefault();
   });
