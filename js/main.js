@@ -61,11 +61,6 @@
 
   var errorHandler = function (errorMessage) {
     var errorM = document.querySelector('#error').content.querySelector('.error');
-    errorM.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
-    errorM.style.position = 'absolute';
-    errorM.style.left = 0;
-    errorM.style.right = 0;
-    errorM.style.fontSize = '30px';
     errorM.textContent = errorMessage;
     main.appendChild(errorM);
   };
