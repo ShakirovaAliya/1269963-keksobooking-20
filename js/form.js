@@ -1,6 +1,5 @@
 'use strict';
 
-
 (function () {
   var noticeBlock = document.querySelector('.notice');
   var mainForm = document.querySelector('.ad-form');
@@ -25,15 +24,21 @@
   buttonSubmit.disabled = true;
   var main = document.querySelector('main');
 
-
   mainForm.addEventListener('submit', function (evt) {
-    window.upload(new FormData(mainForm), function (response) {
+    window.upload(new FormData(mainForm), function () {
       var successM = document.querySelector('#success').content.querySelector('.success');
       main.appendChild(successM);
-      mainForm.classList.add('.ad-form--disabled');
+      evt.preventDefault();
     });
-    evt.preventDefault();
   });
+
+  /*
+  successM.addEventListener('keydown', function (evt) {
+    if (evt.key === 'Escape') {
+      successM.remove();
+    }
+  });
+  */
 
   var titleInput = noticeBlock.querySelector('#title');
   var minTitleLength = 30;
@@ -204,4 +209,3 @@
     }
   });
 })();
-
