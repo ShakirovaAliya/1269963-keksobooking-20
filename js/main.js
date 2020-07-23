@@ -24,6 +24,7 @@
   var maxPinCount = 8;
   var main = document.querySelector('main');
 
+
   // тут я просто вынес в отдельную функцию логику отрисовки всех пинов
   // Всю логику,которую можно обьединить в функции по смыслу( отрисовка всех пинов,отрисовка карточек)
   // нужно обьединять в функции , так позже проще работать с кодом*/
@@ -97,6 +98,7 @@
     addressInput.readOnly = true;
     addressInput.disabled = false;
     addressInput.value = mapPinMain.offsetLeft + ',' + mapPinMain.offsetTop;
+
   };
 
   mapPinMain.addEventListener('keydown', function (evt) {

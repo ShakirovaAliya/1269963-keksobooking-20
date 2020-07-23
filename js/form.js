@@ -3,6 +3,7 @@
 (function () {
   var noticeBlock = document.querySelector('.notice');
   var mainForm = document.querySelector('.ad-form');
+  var mapVision = document.querySelector('.map');
   // mainForm.method = 'post';
   // mainForm.action = 'https://javascript.pages.academy/keksobooking';
   var defaultOptionItem = document.createElement('option');
@@ -10,26 +11,84 @@
   defaultOptionItem.disabled = true;
   defaultOptionItem.value = '99';
   defaultOptionItem.setAttribute('selected', true);
+  var titleInput = noticeBlock.querySelector('#title');
+  var roomsNumber = noticeBlock.querySelector('#room_number');
+  var capacityGuests = noticeBlock.querySelector('#capacity');
   var avatarInput = noticeBlock.querySelector('.ad-form-header');
-  avatarInput.disabled = true;
+  var houseType = noticeBlock.querySelector('#type');
+  var priceInput = noticeBlock.querySelector('#price');
+  var timeInSelect = noticeBlock.querySelector('#timein');
+  var timeOutSelect = noticeBlock.querySelector('#timeout');
+  var time = noticeBlock.querySelector('.ad-form__element--time');
+
+  // avatarInput.disabled = true;
   var imagesInput = noticeBlock.querySelector('#images');
-  imagesInput.disabled = true;
+  // imagesInput.disabled = true;
   var descriptionText = noticeBlock.querySelector('#description');
-  descriptionText.disabled = true;
+  // descriptionText.disabled = true;
   var features = noticeBlock.querySelector('.features');
-  features.disabled = true;
+  var featuresLabel = features.querySelectorAll('.feature');
+  // features.disabled = true;
   var addressInput = noticeBlock.querySelector('#address');
-  addressInput.disabled = true;
+  // addressInput.disabled = true;
   var buttonSubmit = noticeBlock.querySelector('.ad-form__element--submit');
-  buttonSubmit.disabled = true;
+  // buttonSubmit.disabled = true;
   var main = document.querySelector('main');
   var reset = document.querySelector('.ad-form__reset');
 
+  var inactive = function () {
+    titleInput.value = '';
+    titleInput.disabled = true;
+    descriptionText.value = '';
+    descriptionText.disabled = true;
+    addressInput.value = '';
+    addressInput.disabled = true;
+    capacityGuests.value = '99';
+    capacityGuests.setAttribute('disabled', 'true');
+    roomsNumber.value = '99';
+    roomsNumber.setAttribute('disabled', 'true');
+    houseType.value = '99';
+    houseType.setAttribute('disabled', 'true');
+    priceInput.value = '';
+    priceInput.placeholder = '5000';
+    priceInput.setAttribute('disabled', 'true');
+    timeOutSelect.value = '12:00';
+    timeInSelect.value = '12:00';
+    time.disabled = true;
+    time.value = '';
+    avatarInput.disabled = true;
+    avatarInput.value = '';
+    imagesInput.disabled = true;
+    imagesInput.value = '';
+    var newMapCard = document.querySelector('.map__card');
+    if (newMapCard) {
+      newMapCard.classList.add('hidden');
+    }
+    var newPin = document.querySelectorAll('.map__pin');
+    for (var i = 0; i < newPin.length; i++) {
+      newPin[i].classList.add('hidden');
+    }
+    var mapPinMain = document.querySelector('.map__pin--main');
+    mapPinMain.classList.remove('hidden');
+    for (var j = 0; j < featuresLabel.length; j++) {
+      if (featuresLabel[j].addEventListener('change', function () {
+        featuresLabel[j].checked = true;
+      })) {
+        featuresLabel[j].checked = false;
+      }
+    }
+    features.disabled = true;
+    buttonSubmit.disabled = true;
+    mainForm.classList.add('ad-form--disabled');
+    mapVision.classList.add('map--faded');
+
+  };
+
+  inactive();
 
   reset.addEventListener('click', function () {
 
   });
-
 
   var submitHandler = function (evt) {
     window.upload(new FormData(mainForm), function () {
@@ -37,6 +96,7 @@
       main.appendChild(successM);
       document.addEventListener('click', function () {
         successM.classList.add('hidden');
+        inactive();
       });
     });
     evt.preventDefault();
@@ -48,14 +108,13 @@
   document.addEventListener('keydown', function (evt) {
     if (evt.key === 'Escape') {
       successM.classList.add('hidden');
+      inactive();
     }
-  }
-  );
+  });
 
-  var titleInput = noticeBlock.querySelector('#title');
   var minTitleLength = 30;
   var maxTitleLength = 100;
-  titleInput.disabled = true;
+  // titleInput.disabled = true;
   titleInput.minlength = '30';
   titleInput.maxlength = '100';
   titleInput.required = 'true';
@@ -77,12 +136,11 @@
     }
   });
 
-  var roomsNumber = noticeBlock.querySelector('#room_number');
-  var capacityGuests = noticeBlock.querySelector('#capacity');
+
   var defaultOptionItemRooms = defaultOptionItem.cloneNode(true);
   var defaultOptionItemCapacity = defaultOptionItem.cloneNode(true);
-  roomsNumber.setAttribute('disabled', 'true');
-  capacityGuests.setAttribute('disabled', 'true');
+  // roomsNumber.setAttribute('disabled', 'true');
+  // capacityGuests.setAttribute('disabled', 'true');
   capacityGuests.appendChild(defaultOptionItemCapacity);
   roomsNumber.appendChild(defaultOptionItemRooms);
   roomsNumber.addEventListener('change', function () {
@@ -125,11 +183,10 @@
   }
   );
 
-  var houseType = noticeBlock.querySelector('#type');
-  var priceInput = noticeBlock.querySelector('#price');
+
   var defaultOptionItemType = defaultOptionItem.cloneNode(true);
-  houseType.setAttribute('disabled', 'true');
-  priceInput.setAttribute('disabled', 'true');
+  // houseType.setAttribute('disabled', 'true');
+  // priceInput.setAttribute('disabled', 'true');
   priceInput.min = '0';
   priceInput.max = '1000000';
   priceInput.required = 'true';
@@ -151,10 +208,7 @@
     }
   });
 
-  var timeInSelect = noticeBlock.querySelector('#timein');
-  var timeOutSelect = noticeBlock.querySelector('#timeout');
-  var time = noticeBlock.querySelector('.ad-form__element--time');
-  time.disabled = true;
+  // time.disabled = true;
   timeInSelect.addEventListener('change', function () {
     var valueTimeIn = timeInSelect.value;
     if (valueTimeIn === '12:00') {
@@ -176,7 +230,6 @@
     }
   });
 
-  var mapVision = document.querySelector('.map');
   var mapCard = document.querySelector('.map__card');
   var mapContainer = document.querySelector('.map__filters-container');
 
