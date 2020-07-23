@@ -23,6 +23,13 @@
   var buttonSubmit = noticeBlock.querySelector('.ad-form__element--submit');
   buttonSubmit.disabled = true;
   var main = document.querySelector('main');
+  var reset = document.querySelector('.ad-form__reset');
+
+
+  reset.addEventListener('click', function () {
+
+  });
+
 
   var submitHandler = function (evt) {
     window.upload(new FormData(mainForm), function () {
