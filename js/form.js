@@ -24,21 +24,26 @@
   buttonSubmit.disabled = true;
   var main = document.querySelector('main');
 
-  mainForm.addEventListener('submit', function (evt) {
+  var submitHandler = function (evt) {
     window.upload(new FormData(mainForm), function () {
       var successM = document.querySelector('#success').content.querySelector('.success');
       main.appendChild(successM);
-      evt.preventDefault();
+      document.addEventListener('click', function () {
+        successM.classList.add('hidden');
+      });
     });
-  });
+    evt.preventDefault();
+  };
+  mainForm.addEventListener('submit', submitHandler);
 
-  /*
-  successM.addEventListener('keydown', function (evt) {
+  var successM = document.querySelector('#success').content.querySelector('.success');
+  successM.classList.remove('hidden');
+  document.addEventListener('keydown', function (evt) {
     if (evt.key === 'Escape') {
-      successM.remove();
+      successM.classList.add('hidden');
     }
-  });
-  */
+  }
+  );
 
   var titleInput = noticeBlock.querySelector('#title');
   var minTitleLength = 30;
