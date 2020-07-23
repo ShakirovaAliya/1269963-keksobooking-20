@@ -25,7 +25,7 @@
   buttonSubmit.disabled = true;
   var main = document.querySelector('main');
 
-  debugger
+
   mainForm.addEventListener('submit', function (evt) {
     window.upload(new FormData(mainForm), function (successMessage) {
       var successM = document.querySelector('#success').content.querySelector('.success');
@@ -40,7 +40,7 @@
     });
     evt.preventDefault();
   });
-debugger
+
   var titleInput = noticeBlock.querySelector('#title');
   var minTitleLength = 30;
   var maxTitleLength = 100;
