@@ -34,32 +34,45 @@
   var buttonSubmit = noticeBlock.querySelector('.ad-form__element--submit');
   // buttonSubmit.disabled = true;
   var main = document.querySelector('main');
-  var reset = document.querySelector('.ad-form__reset');
+  var resetButton = document.querySelector('.ad-form__reset');
 
-  var inactive = function () {
+  var inactivePage = function () {
     titleInput.value = '';
-    titleInput.disabled = true;
     descriptionText.value = '';
-    descriptionText.disabled = true;
     addressInput.value = '';
-    addressInput.disabled = true;
     capacityGuests.value = '99';
-    capacityGuests.setAttribute('disabled', 'true');
     roomsNumber.value = '99';
-    roomsNumber.setAttribute('disabled', 'true');
     houseType.value = '99';
-    houseType.setAttribute('disabled', 'true');
     priceInput.value = '';
     priceInput.placeholder = '5000';
-    priceInput.setAttribute('disabled', 'true');
     timeOutSelect.value = '12:00';
     timeInSelect.value = '12:00';
-    time.disabled = true;
     time.value = '';
-    avatarInput.disabled = true;
     avatarInput.value = '';
-    imagesInput.disabled = true;
     imagesInput.value = '';
+    for (var j = 0; j < featuresCheckbox.length; j++) {
+      if (featuresCheckbox[j].checked === true) {
+        featuresCheckbox[j].checked = false;
+      }
+    }
+
+  };
+
+  var resetForm = function () {
+    titleInput.disabled = true;
+    descriptionText.disabled = true;
+    addressInput.disabled = true;
+    capacityGuests.setAttribute('disabled', 'true');
+    roomsNumber.setAttribute('disabled', 'true');
+    houseType.setAttribute('disabled', 'true');
+    priceInput.setAttribute('disabled', 'true');
+    time.disabled = true;
+    avatarInput.disabled = true;
+    imagesInput.disabled = true;
+    features.disabled = true;
+    buttonSubmit.disabled = true;
+    mainForm.classList.add('ad-form--disabled');
+    mapVision.classList.add('map--faded');
     var newMapCard = document.querySelector('.map__card');
     if (newMapCard) {
       newMapCard.classList.add('hidden');
@@ -70,21 +83,14 @@
     }
     var mapPinMain = document.querySelector('.map__pin--main');
     mapPinMain.classList.remove('hidden');
-    for (var j = 0; j < featuresCheckbox.length; j++) {
-      if (featuresCheckbox[j].checked === true) {
-        featuresCheckbox[j].checked = false;
-      }
-    }
-    features.disabled = true;
-    buttonSubmit.disabled = true;
-    mainForm.classList.add('ad-form--disabled');
-    mapVision.classList.add('map--faded');
-
   };
+  resetForm();
+  inactivePage();
 
-  inactive();
 
-  reset.addEventListener('click', function () {
+  resetButton.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    inactivePage();
 
   });
 
@@ -94,7 +100,8 @@
       main.appendChild(successM);
       document.addEventListener('click', function () {
         successM.classList.add('hidden');
-        inactive();
+        resetForm();
+        inactivePage();
       });
     });
     evt.preventDefault();
@@ -106,7 +113,8 @@
   document.addEventListener('keydown', function (evt) {
     if (evt.key === 'Escape') {
       successM.classList.add('hidden');
-      inactive();
+      resetForm();
+      inactivePage();
     }
   });
 
