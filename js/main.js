@@ -63,29 +63,23 @@
 
   var errorHandler = function () {
     var errorM = document.querySelector('#error').content.querySelector('.error');
-    main.appendChild(errorM);
+    var errorElement = errorM.cloneNode(true);
+    main.appendChild(errorElement);
     var errorButton = document.querySelector('.error__button');
     errorButton.addEventListener('click', function () {
       errorM.remove();
+      window.load(successHandler, errorHandler);
     });
-    errorM.addEventListener('click', function () {
+    errorElement.addEventListener('click', function () {
       errorM.remove();
     });
     document.addEventListener('keydown', function (evt) {
       if (evt.key === 'Escape') {
-        errorM.remove();
+        errorElement.remove();
       }
     });
   };
 
-  /* var errorM = document.querySelector('#error').content.querySelector('.error');
-  main.appendChild(errorM);
-  var errorButton = document.querySelector('.error__button');
-  if (errorButton.onclick) {
-    window.load(successHandler, errorHandler);
-    errorM.remove();
-  }
-  */
   var activePage = function () {
     // убрал от сюдого window.load(successHandler) поскольку
     // при вызове window.load(..., ...) нам не всегда нужно быдет

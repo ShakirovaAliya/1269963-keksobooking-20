@@ -92,39 +92,47 @@
     evt.preventDefault();
     resetForm();
   });
-
+  var successM = document.querySelector('#success').content.querySelector('.success');
+  var successElement = successM.cloneNode(true);
   var submitHandler = function (evt) {
     window.upload(new FormData(mainForm), function () {
-      var successM = document.querySelector('#success').content.querySelector('.success');
-      main.appendChild(successM);
+      main.appendChild(successElement);
       var listener = function () {
         resetForm();
         inactivePage();
       };
-      successM.addEventListener('click', function () {
-        successM.remove();
+      successElement.addEventListener('click', function () {
+        successElement.remove();
       });
       document.addEventListener('click', listener());
       document.removeEventListener('click', listener());
     });
     evt.preventDefault();
   };
-  var successM = document.querySelector('#success').content.querySelector('.success');
   document.addEventListener('keydown', function (evt) {
     if (evt.key === 'Escape') {
-      successM.remove();
-      resetForm();
-      inactivePage();
+      successElement.remove();
     }
   }
   );
-  document.removeEventListener('keydown', function (evt) {
-    if (evt.key === 'Escape') {
-      resetForm();
-      inactivePage();
-    }
+  if (successElement) {
+    document.addEventListener('keydown', function (evt) {
+      if (evt.key === 'Escape') {
+        resetForm();
+        inactivePage();
+      }
+    });
+  } else {
+    window.activePage();
+    /* document.removeEventListener('keydown', function (evt) {
+      if (evt.key === 'Escape') {
+        resetForm();
+        inactivePage();
+      }
+    });
+    */
   }
-  );
+
 
   mainForm.addEventListener('submit', submitHandler);
   var minTitleLength = 30;
