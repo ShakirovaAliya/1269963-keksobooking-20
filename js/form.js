@@ -36,7 +36,7 @@
   var main = document.querySelector('main');
   var resetButton = document.querySelector('.ad-form__reset');
 
-  var inactivePage = function () {
+  var resetForm = function () {
     titleInput.value = '';
     descriptionText.value = '';
     addressInput.value = '';
@@ -58,7 +58,7 @@
 
   };
 
-  var resetForm = function () {
+  var inactivePage = function () {
     titleInput.disabled = true;
     descriptionText.disabled = true;
     addressInput.disabled = true;
@@ -90,19 +90,22 @@
 
   resetButton.addEventListener('click', function (evt) {
     evt.preventDefault();
-    inactivePage();
-
+    resetForm();
   });
 
   var submitHandler = function (evt) {
     window.upload(new FormData(mainForm), function () {
       var successM = document.querySelector('#success').content.querySelector('.success');
       main.appendChild(successM);
-      document.addEventListener('click', function () {
-        successM.classList.add('hidden');
+      var listener = function () {
         resetForm();
         inactivePage();
+      };
+      successM.addEventListener('click', function () {
+        successM.classList.add('hidden');
       });
+      document.addEventListener('click', listener());
+      document.removeEventListener('click', listener());
     });
     evt.preventDefault();
   };
@@ -279,4 +282,8 @@
       }
     }
   });
+  window.form = {
+    resetForm: resetForm,
+    inactivePage: inactivePage
+  };
 })();

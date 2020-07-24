@@ -60,6 +60,7 @@
     createPins(window.apartamentList);
   };
 
+
   var errorHandler = function () {
     var errorM = document.querySelector('#error').content.querySelector('.error');
     main.appendChild(errorM);
@@ -98,7 +99,6 @@
     addressInput.readOnly = true;
     addressInput.disabled = false;
     addressInput.value = mapPinMain.offsetLeft + ',' + mapPinMain.offsetTop;
-
   };
 
   mapPinMain.addEventListener('keydown', function (evt) {
