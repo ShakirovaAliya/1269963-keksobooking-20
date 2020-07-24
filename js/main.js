@@ -66,14 +66,14 @@
     main.appendChild(errorM);
     var errorButton = document.querySelector('.error__button');
     errorButton.addEventListener('click', function () {
-      errorM.classList.add('hidden');
+      errorM.remove();
     });
     errorM.addEventListener('click', function () {
-      errorM.classList.add('hidden');
+      errorM.remove();
     });
     document.addEventListener('keydown', function (evt) {
       if (evt.key === 'Escape') {
-        errorM.classList.add('hidden');
+        errorM.remove();
       }
     });
   };
@@ -154,7 +154,8 @@
   );
 
   window.main = {
-    successHandler: successHandler
+    successHandler: successHandler,
+    activePage: activePage
   };
 })();
 

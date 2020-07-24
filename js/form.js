@@ -113,17 +113,18 @@
 
   var successM = document.querySelector('#success').content.querySelector('.success');
   successM.classList.remove('hidden');
-  successM.addEventListener('keydown', function (evt) {
-    if (evt.key === 'Escape') {
-      successM.classList.add('hidden');
-    }
-  });
   document.addEventListener('keydown', function (evt) {
     if (evt.key === 'Escape') {
-      resetForm();
-      inactivePage();
+      if (successM.className !== 'hidden') {
+        successM.classList.add('hidden');
+        resetForm();
+        inactivePage();
+      } else {
+        window.main.activePage();
+      }
     }
   });
+
 
   var minTitleLength = 30;
   var maxTitleLength = 100;
