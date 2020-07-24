@@ -68,7 +68,7 @@
     errorButton.addEventListener('click', function () {
       errorM.classList.add('hidden');
     });
-    document.addEventListener('click', function () {
+    errorM.addEventListener('click', function () {
       errorM.classList.add('hidden');
     });
     document.addEventListener('keydown', function (evt) {

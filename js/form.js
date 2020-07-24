@@ -113,9 +113,13 @@
 
   var successM = document.querySelector('#success').content.querySelector('.success');
   successM.classList.remove('hidden');
-  document.addEventListener('keydown', function (evt) {
+  successM.addEventListener('keydown', function (evt) {
     if (evt.key === 'Escape') {
       successM.classList.add('hidden');
+    }
+  });
+  document.addEventListener('keydown', function (evt) {
+    if (evt.key === 'Escape') {
       resetForm();
       inactivePage();
     }
