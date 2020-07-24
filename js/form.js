@@ -27,7 +27,7 @@
   var descriptionText = noticeBlock.querySelector('#description');
   // descriptionText.disabled = true;
   var features = noticeBlock.querySelector('.features');
-  var featuresLabel = features.querySelectorAll('.feature');
+  var featuresCheckbox = noticeBlock.querySelectorAll('.feature__checkbox');
   // features.disabled = true;
   var addressInput = noticeBlock.querySelector('#address');
   // addressInput.disabled = true;
@@ -70,11 +70,9 @@
     }
     var mapPinMain = document.querySelector('.map__pin--main');
     mapPinMain.classList.remove('hidden');
-    for (var j = 0; j < featuresLabel.length; j++) {
-      if (featuresLabel[j].addEventListener('change', function () {
-        featuresLabel[j].checked = true;
-      })) {
-        featuresLabel[j].checked = false;
+    for (var j = 0; j < featuresCheckbox.length; j++) {
+      if (featuresCheckbox[j].checked === true) {
+        featuresCheckbox[j].checked = false;
       }
     }
     features.disabled = true;
