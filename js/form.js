@@ -102,30 +102,31 @@
         inactivePage();
       };
       successM.addEventListener('click', function () {
-        successM.classList.add('hidden');
+        successM.remove();
       });
       document.addEventListener('click', listener());
       document.removeEventListener('click', listener());
     });
     evt.preventDefault();
   };
-  mainForm.addEventListener('submit', submitHandler);
-
   var successM = document.querySelector('#success').content.querySelector('.success');
-  successM.classList.remove('hidden');
   document.addEventListener('keydown', function (evt) {
     if (evt.key === 'Escape') {
-      if (successM.className !== 'hidden') {
-        successM.classList.add('hidden');
-        resetForm();
-        inactivePage();
-      } else {
-        window.main.activePage();
-      }
+      successM.remove();
+      resetForm();
+      inactivePage();
     }
-  });
+  }
+  );
+  document.removeEventListener('keydown', function (evt) {
+    if (evt.key === 'Escape') {
+      resetForm();
+      inactivePage();
+    }
+  }
+  );
 
-
+  mainForm.addEventListener('submit', submitHandler);
   var minTitleLength = 30;
   var maxTitleLength = 100;
   // titleInput.disabled = true;

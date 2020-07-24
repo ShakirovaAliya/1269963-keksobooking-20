@@ -78,6 +78,14 @@
     });
   };
 
+  /* var errorM = document.querySelector('#error').content.querySelector('.error');
+  main.appendChild(errorM);
+  var errorButton = document.querySelector('.error__button');
+  if (errorButton.onclick) {
+    window.load(successHandler, errorHandler);
+    errorM.remove();
+  }
+  */
   var activePage = function () {
     // убрал от сюдого window.load(successHandler) поскольку
     // при вызове window.load(..., ...) нам не всегда нужно быдет
