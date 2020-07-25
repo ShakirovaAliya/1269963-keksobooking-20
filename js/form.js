@@ -90,8 +90,11 @@
   var successM = document.querySelector('#success').content.querySelector('.success');
   var successElement = successM.cloneNode(true);
   var submitHandler = function (evt) {
+    // отправляются данные формы
     window.upload(new FormData(mainForm), function () {
+    // создается сообщение об успешной отпраке
       main.appendChild(successElement);
+      // при клике на него - оно удаляется и страницв переходит в неактивный режим
       successElement.addEventListener('click', function () {
         successElement.remove();
         listener();
@@ -99,6 +102,7 @@
     });
     evt.preventDefault();
   };
+  // если сообщение есть то при нажатии на ecs оно закрывается и переходит в неактивный режим
   if (successElement) {
     document.addEventListener('keydown', function (evt) {
       if (evt.key === 'Escape') {
@@ -107,7 +111,9 @@
       }
     }
     );
-  } else {
+  }
+  // если его нет, то удаляется переход в неактивный режим
+  else {
     document.removeEventListener('keydown', function (evt) {
       if (evt.key === 'Escape') {
         listener();
