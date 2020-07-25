@@ -4,8 +4,6 @@
   var noticeBlock = document.querySelector('.notice');
   var mainForm = document.querySelector('.ad-form');
   var mapVision = document.querySelector('.map');
-  // mainForm.method = 'post';
-  // mainForm.action = 'https://javascript.pages.academy/keksobooking';
   var defaultOptionItem = document.createElement('option');
   defaultOptionItem.innerHTML = 'выберите значение';
   defaultOptionItem.disabled = true;
@@ -20,19 +18,12 @@
   var timeInSelect = noticeBlock.querySelector('#timein');
   var timeOutSelect = noticeBlock.querySelector('#timeout');
   var time = noticeBlock.querySelector('.ad-form__element--time');
-
-  // avatarInput.disabled = true;
   var imagesInput = noticeBlock.querySelector('#images');
-  // imagesInput.disabled = true;
   var descriptionText = noticeBlock.querySelector('#description');
-  // descriptionText.disabled = true;
   var features = noticeBlock.querySelector('.features');
   var featuresCheckbox = noticeBlock.querySelectorAll('.feature__checkbox');
-  // features.disabled = true;
   var addressInput = noticeBlock.querySelector('#address');
-  // addressInput.disabled = true;
   var buttonSubmit = noticeBlock.querySelector('.ad-form__element--submit');
-  // buttonSubmit.disabled = true;
   var main = document.querySelector('main');
   var resetButton = document.querySelector('.ad-form__reset');
 
@@ -84,9 +75,13 @@
     var mapPinMain = document.querySelector('.map__pin--main');
     mapPinMain.classList.remove('hidden');
   };
+
   resetForm();
   inactivePage();
-
+  var listener = function () {
+    resetForm();
+    inactivePage();
+  };
 
   resetButton.addEventListener('click', function (evt) {
     evt.preventDefault();
@@ -97,47 +92,34 @@
   var submitHandler = function (evt) {
     window.upload(new FormData(mainForm), function () {
       main.appendChild(successElement);
-      var listener = function () {
-        resetForm();
-        inactivePage();
-      };
       successElement.addEventListener('click', function () {
         successElement.remove();
+        listener();
       });
-      document.addEventListener('click', listener());
-      document.removeEventListener('click', listener());
     });
     evt.preventDefault();
   };
-  document.addEventListener('keydown', function (evt) {
-    if (evt.key === 'Escape') {
-      successElement.remove();
-    }
-  }
-  );
   if (successElement) {
     document.addEventListener('keydown', function (evt) {
       if (evt.key === 'Escape') {
-        resetForm();
-        inactivePage();
+        successElement.remove();
+        listener();
       }
-    });
+    }
+    );
   } else {
-    window.activePage();
-    /* document.removeEventListener('keydown', function (evt) {
+    document.removeEventListener('keydown', function (evt) {
       if (evt.key === 'Escape') {
-        resetForm();
-        inactivePage();
+        listener();
       }
-    });
-    */
+    }
+    );
   }
 
 
   mainForm.addEventListener('submit', submitHandler);
   var minTitleLength = 30;
   var maxTitleLength = 100;
-  // titleInput.disabled = true;
   titleInput.minlength = '30';
   titleInput.maxlength = '100';
   titleInput.required = 'true';
@@ -162,8 +144,6 @@
 
   var defaultOptionItemRooms = defaultOptionItem.cloneNode(true);
   var defaultOptionItemCapacity = defaultOptionItem.cloneNode(true);
-  // roomsNumber.setAttribute('disabled', 'true');
-  // capacityGuests.setAttribute('disabled', 'true');
   capacityGuests.appendChild(defaultOptionItemCapacity);
   roomsNumber.appendChild(defaultOptionItemRooms);
   roomsNumber.addEventListener('change', function () {
@@ -208,8 +188,6 @@
 
 
   var defaultOptionItemType = defaultOptionItem.cloneNode(true);
-  // houseType.setAttribute('disabled', 'true');
-  // priceInput.setAttribute('disabled', 'true');
   priceInput.min = '0';
   priceInput.max = '1000000';
   priceInput.required = 'true';
@@ -231,7 +209,6 @@
     }
   });
 
-  // time.disabled = true;
   timeInSelect.addEventListener('change', function () {
     var valueTimeIn = timeInSelect.value;
     if (valueTimeIn === '12:00') {
@@ -262,9 +239,6 @@
     var dataPopup;
     if (target.className === 'map__pin' || target.className === 'popup_img') {
       var pinId = target.dataset.id;
-      // в данной функции ни чего не изменилось кроме того,что поиск нужного
-      // елемента мы теперь проводим в массиве window.apartamentList
-      // который создали в функции successHandler файла main
       dataPopup = window.apartamentList.find(function (element) {
         return element.id === Number(pinId);
       });
