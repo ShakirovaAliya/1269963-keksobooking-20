@@ -102,10 +102,11 @@
         successElement.remove();
         listener();
         document.removeEventListener('click', uploadFormSuccess);
+        document.removeEventListener('keydown', closeEsc);
       }
     };
     document.addEventListener('keydown', closeEsc);
-    document.removeEventListener('keydown', closeEsc);
+
   };
 
 
