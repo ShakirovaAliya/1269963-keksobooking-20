@@ -76,8 +76,6 @@
     mapPinMain.classList.remove('hidden');
   };
 
-  resetForm();
-  inactivePage();
   var listener = function () {
     resetForm();
     inactivePage();
@@ -87,25 +85,33 @@
     evt.preventDefault();
     resetForm();
   });
-
-  var submitHandler = function () {
-    window.upload(new FormData(mainForm), function () {
-      var successM = document.querySelector('#success').content.querySelector('.success');
-      var successElement = successM.cloneNode(true);
-      main.appendChild(successElement);
-      successElement.addEventListener('click', function () {
+  var aploadSuccess = function () {
+    var successM = document.querySelector('#success').content.querySelector('.success');
+    var successElementClone = successM.cloneNode(true);
+    successElementClone.classList.add('success-element');
+    main.appendChild(successElementClone);
+    var successElement = document.querySelector('.success-element');
+    var uploadFormSuccess = function () {
+      successElement.remove();
+      listener();
+      document.removeEventListener('click', uploadFormSuccess);
+    };
+    document.addEventListener('click', uploadFormSuccess);
+    var closeEsc = function (e) {
+      if (e.key === 'Escape') {
         successElement.remove();
         listener();
-      });
+        document.removeEventListener('click', uploadFormSuccess);
+      }
+    };
+    document.addEventListener('keydown', closeEsc);
+    document.removeEventListener('keydown', closeEsc);
+  };
 
-      successElement.addEventListener('keydown', function (evt) {
-        if (evt.key === 'Escape') {
-          successElement.remove();
-          listener();
-        }
-      });
 
-    });
+  var submitHandler = function (evt) {
+    window.upload(new FormData(mainForm), aploadSuccess);
+    evt.preventDefault();
   };
 
 
