@@ -1,33 +1,125 @@
 'use strict';
 
-
 (function () {
   var noticeBlock = document.querySelector('.notice');
   var mainForm = document.querySelector('.ad-form');
-  mainForm.method = 'post';
-  mainForm.action = 'https://javascript.pages.academy/keksobooking';
+  var mapVision = document.querySelector('.map');
   var defaultOptionItem = document.createElement('option');
   defaultOptionItem.innerHTML = 'выберите значение';
   defaultOptionItem.disabled = true;
   defaultOptionItem.value = '99';
   defaultOptionItem.setAttribute('selected', true);
-  var avatarInput = noticeBlock.querySelector('.ad-form-header');
-  avatarInput.disabled = true;
-  var imagesInput = noticeBlock.querySelector('#images');
-  imagesInput.disabled = true;
-  var descriptionText = noticeBlock.querySelector('#description');
-  descriptionText.disabled = true;
-  var features = noticeBlock.querySelector('.features');
-  features.disabled = true;
-  var addressInput = noticeBlock.querySelector('#address');
-  addressInput.disabled = true;
-  var buttonSubmit = noticeBlock.querySelector('.ad-form__element--submit');
-  buttonSubmit.disabled = true;
-
   var titleInput = noticeBlock.querySelector('#title');
+  var roomsNumber = noticeBlock.querySelector('#room_number');
+  var capacityGuests = noticeBlock.querySelector('#capacity');
+  var avatarInput = noticeBlock.querySelector('.ad-form-header');
+  var houseType = noticeBlock.querySelector('#type');
+  var priceInput = noticeBlock.querySelector('#price');
+  var timeInSelect = noticeBlock.querySelector('#timein');
+  var timeOutSelect = noticeBlock.querySelector('#timeout');
+  var time = noticeBlock.querySelector('.ad-form__element--time');
+  var imagesInput = noticeBlock.querySelector('#images');
+  var descriptionText = noticeBlock.querySelector('#description');
+  var features = noticeBlock.querySelector('.features');
+  var featuresCheckbox = noticeBlock.querySelectorAll('.feature__checkbox');
+  var addressInput = noticeBlock.querySelector('#address');
+  var buttonSubmit = noticeBlock.querySelector('.ad-form__element--submit');
+  var main = document.querySelector('main');
+  var resetButton = document.querySelector('.ad-form__reset');
+
+  var resetForm = function () {
+    titleInput.value = '';
+    descriptionText.value = '';
+    addressInput.value = '';
+    capacityGuests.value = '99';
+    roomsNumber.value = '99';
+    houseType.value = '99';
+    priceInput.value = '';
+    priceInput.placeholder = '5000';
+    timeOutSelect.value = '12:00';
+    timeInSelect.value = '12:00';
+    time.value = '';
+    avatarInput.value = '';
+    imagesInput.value = '';
+    for (var j = 0; j < featuresCheckbox.length; j++) {
+      if (featuresCheckbox[j].checked === true) {
+        featuresCheckbox[j].checked = false;
+      }
+    }
+
+  };
+
+  var inactivePage = function () {
+    titleInput.disabled = true;
+    descriptionText.disabled = true;
+    addressInput.disabled = true;
+    capacityGuests.setAttribute('disabled', 'true');
+    roomsNumber.setAttribute('disabled', 'true');
+    houseType.setAttribute('disabled', 'true');
+    priceInput.setAttribute('disabled', 'true');
+    time.disabled = true;
+    avatarInput.disabled = true;
+    imagesInput.disabled = true;
+    features.disabled = true;
+    buttonSubmit.disabled = true;
+    mainForm.classList.add('ad-form--disabled');
+    mapVision.classList.add('map--faded');
+    var newMapCard = document.querySelector('.map__card');
+    if (newMapCard) {
+      newMapCard.classList.add('hidden');
+    }
+    var newPin = document.querySelectorAll('.map__pin');
+    for (var i = 0; i < newPin.length; i++) {
+      newPin[i].classList.add('hidden');
+    }
+    var mapPinMain = document.querySelector('.map__pin--main');
+    mapPinMain.classList.remove('hidden');
+  };
+
+  var listener = function () {
+    resetForm();
+    inactivePage();
+  };
+
+  resetButton.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    resetForm();
+  });
+  var aploadSuccess = function () {
+    var successM = document.querySelector('#success').content.querySelector('.success');
+    var successElementClone = successM.cloneNode(true);
+    successElementClone.classList.add('success-element');
+    main.appendChild(successElementClone);
+    var successElement = document.querySelector('.success-element');
+    var uploadFormSuccess = function () {
+      successElement.remove();
+      listener();
+      document.removeEventListener('click', uploadFormSuccess);
+    };
+    document.addEventListener('click', uploadFormSuccess);
+    var closeEsc = function (e) {
+      if (e.key === 'Escape') {
+        successElement.remove();
+        listener();
+        document.removeEventListener('click', uploadFormSuccess);
+        document.removeEventListener('keydown', closeEsc);
+      }
+    };
+    document.addEventListener('keydown', closeEsc);
+
+  };
+
+
+  var submitHandler = function (evt) {
+    window.upload(new FormData(mainForm), aploadSuccess);
+    evt.preventDefault();
+  };
+
+
+  mainForm.addEventListener('submit', submitHandler);
+
   var minTitleLength = 30;
   var maxTitleLength = 100;
-  titleInput.disabled = true;
   titleInput.minlength = '30';
   titleInput.maxlength = '100';
   titleInput.required = 'true';
@@ -49,12 +141,9 @@
     }
   });
 
-  var roomsNumber = noticeBlock.querySelector('#room_number');
-  var capacityGuests = noticeBlock.querySelector('#capacity');
+
   var defaultOptionItemRooms = defaultOptionItem.cloneNode(true);
   var defaultOptionItemCapacity = defaultOptionItem.cloneNode(true);
-  roomsNumber.setAttribute('disabled', 'true');
-  capacityGuests.setAttribute('disabled', 'true');
   capacityGuests.appendChild(defaultOptionItemCapacity);
   roomsNumber.appendChild(defaultOptionItemRooms);
   roomsNumber.addEventListener('change', function () {
@@ -97,11 +186,8 @@
   }
   );
 
-  var houseType = noticeBlock.querySelector('#type');
-  var priceInput = noticeBlock.querySelector('#price');
+
   var defaultOptionItemType = defaultOptionItem.cloneNode(true);
-  houseType.setAttribute('disabled', 'true');
-  priceInput.setAttribute('disabled', 'true');
   priceInput.min = '0';
   priceInput.max = '1000000';
   priceInput.required = 'true';
@@ -123,10 +209,6 @@
     }
   });
 
-  var timeInSelect = noticeBlock.querySelector('#timein');
-  var timeOutSelect = noticeBlock.querySelector('#timeout');
-  var time = noticeBlock.querySelector('.ad-form__element--time');
-  time.disabled = true;
   timeInSelect.addEventListener('change', function () {
     var valueTimeIn = timeInSelect.value;
     if (valueTimeIn === '12:00') {
@@ -148,15 +230,16 @@
     }
   });
 
-  var mapVision = document.querySelector('.map');
   var mapCard = document.querySelector('.map__card');
   var mapContainer = document.querySelector('.map__filters-container');
+
+
   var getId = function (evt) {
     var target = evt.target;
     var dataPopup;
     if (target.className === 'map__pin' || target.className === 'popup_img') {
       var pinId = target.dataset.id;
-      dataPopup = window.pin.similarAds.find(function (element) {
+      dataPopup = window.apartamentList.find(function (element) {
         return element.id === Number(pinId);
       });
 
@@ -187,5 +270,8 @@
       }
     }
   });
-
+  window.form = {
+    resetForm: resetForm,
+    inactivePage: inactivePage
+  };
 })();
