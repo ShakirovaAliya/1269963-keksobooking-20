@@ -22,7 +22,6 @@
   var buttonSubmit = noticeBlock.querySelector('.ad-form__element--submit');
   var addressInput = noticeBlock.querySelector('#address');
   var maxPinCount = 8;
-  var newMaxPinCount = 5;
   var main = document.querySelector('main');
 
 
