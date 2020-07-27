@@ -21,7 +21,69 @@
   var imagesInput = noticeBlock.querySelector('#images');
   var buttonSubmit = noticeBlock.querySelector('.ad-form__element--submit');
   var addressInput = noticeBlock.querySelector('#address');
+  var maxPinCount = 8;
+  var main = document.querySelector('main');
+
+
+  // тут я просто вынес в отдельную функцию логику отрисовки всех пинов
+  // Всю логику,которую можно обьединить в функции по смыслу( отрисовка всех пинов,отрисовка карточек)
+  // нужно обьединять в функции , так позже проще работать с кодом*/
+  var createPins = function (data) {
+    var fragment = document.createDocumentFragment();
+    for (var i = 0; i < maxPinCount; i++) {
+      fragment.appendChild(window.createpin.createPin(data[i]));
+    }
+    mapPin.appendChild(fragment);
+  };
+
+
+  var successHandler = function (data) {
+    // если фун-я window.load выбросила успешное получение данных
+    // а именно successHandler то запускаеться колбэк successHandler в котором
+    // мы и описываем всю асинхронную логику
+    // Если по логике
+    // 1-е  мы переводим страницу в активный режим
+    // 2-е  отрисовуем пины с помощью функции createPins на основании данных,
+    // которые нам пришли с сервера и в которые мы добавили id*/
+    activePage();
+    // выносим переменную apartamentList в область видимости window
+    // что б дальше можно было ней пользоваться и записываем в неё данные
+    // которые пришли с сервера data
+    window.apartamentList = data;
+    // поскольку отображение попапа мы реализовали через делегирование
+    // которое основуеться на поиске id елемента - добавляем каждому елементу массива данных поле id
+    // с помощью цикла где id = индексу елемента в массиве
+    for (var i = 0; i < window.apartamentList.length; i++) {
+      window.apartamentList[i].id = i;
+    }
+    // дальше на основании данных window.apartamentList отрисовуем пины
+    createPins(window.apartamentList);
+  };
+
+
+  var errorHandler = function () {
+    var errorM = document.querySelector('#error').content.querySelector('.error');
+    var errorElement = errorM.cloneNode(true);
+    main.appendChild(errorElement);
+    var errorButton = document.querySelector('.error__button');
+    errorButton.addEventListener('click', function () {
+      errorM.remove();
+      window.load(successHandler, errorHandler);
+    });
+    errorElement.addEventListener('click', function () {
+      errorM.remove();
+    });
+    document.addEventListener('keydown', function (evt) {
+      if (evt.key === 'Escape') {
+        errorElement.remove();
+      }
+    });
+  };
+
   var activePage = function () {
+    // убрал от сюдого window.load(successHandler) поскольку
+    // при вызове window.load(..., ...) нам не всегда нужно быдет
+    // переводить екран в активный режим, а только при удачной загрузке данных с сервера successHandler
     mapVision.classList.remove('map--faded');
     formDisabled.classList.remove('ad-form--disabled');
     mapFilter.disabled = false;
@@ -39,23 +101,21 @@
     addressInput.readOnly = true;
     addressInput.disabled = false;
     addressInput.value = mapPinMain.offsetLeft + ',' + mapPinMain.offsetTop;
-    var fragment = document.createDocumentFragment();
-    for (var i = 0; i < window.pin.similarAds.length; i++) {
-      fragment.appendChild(window.createpin.createPin(window.pin.similarAds[i]));
-    }
-    mapPin.appendChild(fragment);
   };
 
   mapPinMain.addEventListener('keydown', function (evt) {
     if (evt.key === 'Enter') {
       evt.preventDefault();
-      activePage();
+      // при нажатии кнопки запустим обработку функции  запроса с сервера данных
+      window.load(successHandler, errorHandler);
     }
   });
 
   mapPinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
-    activePage();
+    // если же пользователь нажал кнопку мыши - запустим обработку функции
+    //  запроса с сервера данных
+    window.load(successHandler, errorHandler);
     var startCoords = {
       x: evt.clientX,
       y: evt.clientY
@@ -94,7 +154,10 @@
     document.addEventListener('mouseup', onMouseUp);
   }
   );
-}
-)();
 
+  window.main = {
+    successHandler: successHandler,
+    activePage: activePage
+  };
+})();
 
