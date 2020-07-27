@@ -22,6 +22,7 @@
   var buttonSubmit = noticeBlock.querySelector('.ad-form__element--submit');
   var addressInput = noticeBlock.querySelector('#address');
   var maxPinCount = 8;
+  var newMaxPinCount = 5;
   var main = document.querySelector('main');
 
 
@@ -44,30 +45,25 @@
   };
 
   var defaultOptionItem = document.createElement('option');
-  defaultOptionItem.innerHTML = 'выберите значение';
-  defaultOptionItem.disabled = true;
-  defaultOptionItem.value = '99';
-  defaultOptionItem.setAttribute('selected', true);
   var housingType = document.querySelector('#housing-type');
   var defaultOptionItemTypeAppartments = defaultOptionItem.cloneNode(true);
   housingType.appendChild(defaultOptionItemTypeAppartments);
   window.apartamentList = [];
   var appartmentType = ['any', 'palace', 'flat', 'house', 'bungalo'];
   var typeAp;
+  housingType.addEventListener('change', function () {
+    for (var h = 0; h < appartmentType.length; h++) {
+      housingType.value = appartmentType[h];
+      typeAp = appartmentType[h];
+    }
+    updateAppartments();
+  });
   var updateAppartments = function () {
     var sameAppartments = window.apartamentList.filter(function (it) {
       return it.typeAp === typeAp;
     });
-    window.createPins(sameAppartments);
+    createPins(sameAppartments);
   };
-  housingType.addEventListener('change', function () {
-    for (var i = 0; i < appartmentType.length; i++) {
-      housingType.value = appartmentType[i];
-      typeAp = appartmentType[i];
-    }
-    updateAppartments();
-  });
-
 
   var errorHandler = function () {
     var errorM = document.querySelector('#error').content.querySelector('.error');
