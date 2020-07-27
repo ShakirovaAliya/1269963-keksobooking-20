@@ -80,6 +80,27 @@
     });
   };
 
+  var defaultOptionItem = document.createElement('option');
+  var housingType = document.querySelector('#housing-type');
+  var defaultOptionItemTypeAppartments = defaultOptionItem.cloneNode(true);
+  housingType.appendChild(defaultOptionItemTypeAppartments);
+  window.apartamentList = [];
+  var appartmentType = ['any', 'palace', 'flat', 'house', 'bungalo'];
+  var typeAp;
+  housingType.addEventListener('change', function () {
+    for (var h = 0; h < appartmentType.length; h++) {
+      housingType.value = appartmentType[h];
+      typeAp = appartmentType[h];
+    }
+    updateAppartments();
+  });
+  var updateAppartments = function () {
+    var sameAppartments = window.apartamentList.filter(function (it) {
+      return it.typeAp === typeAp;
+    });
+    createPins(sameAppartments);
+  };
+
   var activePage = function () {
     // убрал от сюдого window.load(successHandler) поскольку
     // при вызове window.load(..., ...) нам не всегда нужно быдет
