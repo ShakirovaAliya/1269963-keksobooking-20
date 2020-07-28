@@ -36,14 +36,12 @@
   };
 
   var filterForm = document.querySelector('.map__filters');
-  var filterElement = filterForm.querySelector('.map__filter');
-  var filterType = filterElement.querySelector('#housing-type');
   var typeList = ['any', 'palace', 'flat', 'house', 'bungalo'];
-  /* var filterPrice = filterElement.querySelector('#housing-price');
+  /* var filterPrice = filterForm.querySelector('#housing-price');
   var priceList = ['any', 'middle', 'low', 'high'];
-  var filterRooms = filterElement.querySelector('#housing-rooms');
+  var filterRooms = filterForm.querySelector('#housing-rooms');
   var roomsList = ['any', '1', '2', '3'];
-  var filterGuests = filterElement.querySelector('#housing-guests');
+  var filterGuests = filterForm.querySelector('#housing-guests');
   var guestsList = ['any', '1', '2', '0'];
   var filterFeatures = filterForm.querySelector('#housing-features');
   var typeAp;
@@ -52,7 +50,7 @@
   var guestsAp;
   var featuresAp;
   */
-
+  var filterType = filterForm.querySelector('#housing-type');
   filterType.addEventListener('change', function () {
     for (var h = 0; h < typeList.length; h++) {
       filterType.value = typeList[h];
