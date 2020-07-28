@@ -27,9 +27,12 @@
   };
 
   window.apartamentList = [];
-
+  var typeAp = 'flat';
   window.updatePins = function () {
-    window.createPins(window.apartamentList);
+    var sameTypeAp = window.apartamentList .filter(function (it) {
+      return it.typeAp === typeAp;
+    });
+    window.createPins(sameTypeAp);
   };
 
   var filterForm = document.querySelector('.map__filters');
@@ -49,12 +52,14 @@
   var guestsAp;
   var featuresAp;
   */
-  for (var h = 0; h < typeList.length; h++) {
-    filterType.addEventListener('change', function () {
+
+  filterType.addEventListener('change', function () {
+    for (var h = 0; h < typeList.length; h++) {
       filterType.value = typeList[h];
-      window.createPins(window.apartamentList);
-    });
-  }
+      typeAp = typeList[h];
+    }
+    window.updatePins();
+  });
 
 })();
 
