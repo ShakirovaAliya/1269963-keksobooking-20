@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var maxPinCount = 8;
+  var maxPinCount = 5;
   var mapPin = document.querySelector('.map__pins');
   var similarMapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var createPin = function (properties) {
@@ -25,27 +25,31 @@
   };
 
   var mapFilters = document.querySelector('.map__filters');
-  var typeList = ['any', 'palace', 'flat', 'house', 'bungalo'];
   var filterType = mapFilters.querySelector('#housing-type');
-  var typeAp = 'any';
-
-  // если меняется значение в фильтре ТИП ЖИЛЬЯ, то остаются только объявления с выбранным типом
-  filterType.addEventListener('change', function () {
-    for (var h = 0; h < typeList.length; h++) {
-      filterType.value = typeList[h];
-      typeAp = typeList[h];
-    }
+  var typeOfHouse = '';
+  filterType.addEventListener('change', function (evt) {
+    typeOfHouse = evt.target.value;
     window.updatePins();
   });
+
+  /*
+  var filterPrice = mapFilters.querySelector('#housing-price');
+  var priceOfHouse = '';
+  filterPrice.addEventListener('change', function (evt) {
+    priceOfHouse = evt.target.value;
+    window.updatePins();
+  });
+  */
+ debugger
   window.updatePins = function () {
     var sameTypeAp = window.apartamentList.filter(function (it) {
-      return it.type === typeAp;
+      return it.type === typeOfHouse.value;
     });
     window.createPins(sameTypeAp);
   };
+  debugger
   /*
-
-  var filterPrice = mapFilters.querySelector('#housing-price');
+  var typeList = ['any', 'palace', 'flat', 'house', 'bungalo'];
   var priceList = ['any', 'middle', 'low', 'high'];
   var filterRooms = mapFilters.querySelector('#housing-rooms');
   var roomsList = ['any', '1', '2', '3'];

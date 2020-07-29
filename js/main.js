@@ -22,8 +22,7 @@
   var buttonSubmit = noticeBlock.querySelector('.ad-form__element--submit');
   var addressInput = noticeBlock.querySelector('#address');
   var main = document.querySelector('main');
-
-
+debugger
   var successHandler = function (data) {
     activePage();
     window.apartamentList = data;
@@ -33,7 +32,7 @@
     window.updatePins();
     // window.createPins(window.apartamentList);
   };
-
+debugger
 
   var errorHandler = function () {
     var errorM = document.querySelector('#error').content.querySelector('.error');
