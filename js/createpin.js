@@ -40,14 +40,14 @@
     window.updatePins();
   });
   */
- debugger
+
   window.updatePins = function () {
     var sameTypeAp = window.apartamentList.filter(function (it) {
       return it.type === typeOfHouse.value;
     });
     window.createPins(sameTypeAp);
   };
-  debugger
+
   /*
   var typeList = ['any', 'palace', 'flat', 'house', 'bungalo'];
   var priceList = ['any', 'middle', 'low', 'high'];
