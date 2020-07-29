@@ -26,6 +26,11 @@
   var buttonSubmit = noticeBlock.querySelector('.ad-form__element--submit');
   var main = document.querySelector('main');
   var resetButton = document.querySelector('.ad-form__reset');
+  var avatarPreview = document.querySelector('.ad-form-header__preview img');
+  var photoPreviewContainer = document.querySelector('.ad-form__photo');
+  var photoElement = document.createElement('img');
+  photoPreviewContainer.appendChild(photoElement);
+  var photoPreview = document.querySelector('.ad-form__photo img');
 
   var resetForm = function () {
     titleInput.value = '';
@@ -41,6 +46,8 @@
     time.value = '';
     avatarInput.value = '';
     imagesInput.value = '';
+    avatarPreview.src = 'img/muffin-grey.svg';
+    photoPreview.remove();
     for (var j = 0; j < featuresCheckbox.length; j++) {
       if (featuresCheckbox[j].checked === true) {
         featuresCheckbox[j].checked = false;
