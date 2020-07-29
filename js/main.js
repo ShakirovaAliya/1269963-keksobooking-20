@@ -31,7 +31,6 @@
       window.apartamentList[i].id = i;
     }
     window.updatePins();
-    // window.createPins(window.apartamentList);
   };
 
 

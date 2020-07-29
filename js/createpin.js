@@ -17,50 +17,70 @@
   };
 
   window.createPins = function (data) {
+    var takeNumber = data.length > maxPinCount ? maxPinCount : data.length;
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < maxPinCount; i++) {
+    for (var i = 0; i < takeNumber; i++) {
       fragment.appendChild(createPin(data[i]));
     }
     mapPin.appendChild(fragment);
+
   };
+
 
   var mapFilters = document.querySelector('.map__filters');
   var filterType = mapFilters.querySelector('#housing-type');
-  var typeOfHouse = '';
+  var typeOfHouse = 'any';
   filterType.addEventListener('change', function (evt) {
     typeOfHouse = evt.target.value;
     window.updatePins();
   });
-
-  /*
+/*
   var filterPrice = mapFilters.querySelector('#housing-price');
   var priceOfHouse = '';
   filterPrice.addEventListener('change', function (evt) {
     priceOfHouse = evt.target.value;
     window.updatePins();
   });
-  */
 
+  var filterRooms = mapFilters.querySelector('#housing-rooms');
+  var roomsOfHouse = '';
+  filterRooms.addEventListener('change', function (evt) {
+    roomsOfHouse = evt.target.value;
+    window.updatePins();
+  });
+
+  var filterGuests = mapFilters.querySelector('#housing-guests');
+  var guestsOfHouse = '';
+  filterGuests.addEventListener('change', function (evt) {
+    guestsOfHouse = evt.target.value;
+    window.updatePins();
+  });
+*/
   window.updatePins = function () {
     var sameTypeAp = window.apartamentList.filter(function (it) {
       return it.type === typeOfHouse.value;
     });
+    /* var samePriceAp = window.apartamentList.filter(function (it) {
+      return it.price === priceOfHouse.value;
+    });
+    var sameRoomsAp = window.apartamentList.filter(function (it) {
+      return it.rooms === roomsOfHouse.value;
+    });
+    var sameGuestsAp = window.apartamentList.filter(function (it) {
+      return it.guests === guestsOfHouse.value;
+    });
+    */
+
     window.createPins(sameTypeAp);
   };
 
   /*
+  .concat(samePriceAp).concat(sameRoomsAp).concat(sameGuestsAp)
   var typeList = ['any', 'palace', 'flat', 'house', 'bungalo'];
   var priceList = ['any', 'middle', 'low', 'high'];
-  var filterRooms = mapFilters.querySelector('#housing-rooms');
   var roomsList = ['any', '1', '2', '3'];
-  var filterGuests = mapFilters.querySelector('#housing-guests');
   var guestsList = ['any', '1', '2', '0'];
   var filterFeatures = mapFilters.querySelector('#housing-features');
-  var typeAp;
-  var priceAp;
-  var roomsAp;
-  var guestsAp;
-  var featuresAp;
   */
 
 
