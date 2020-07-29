@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var maxPinCount = 5;
+  var MAX_PIN_COUNT = 5;
   var mapCard = document.querySelector('.map__card');
   var mapPin = document.querySelector('.map__pins');
   var similarMapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
@@ -18,7 +18,7 @@
   };
 
   window.createPins = function (data) {
-    var takeNumber = data.length > maxPinCount ? maxPinCount : data.length;
+    var takeNumber = data.length > MAX_PIN_COUNT ? MAX_PIN_COUNT : data.length;
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < takeNumber; i++) {
       fragment.appendChild(createPin(data[i]));

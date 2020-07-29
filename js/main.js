@@ -1,5 +1,7 @@
 'use strict';
 (function () {
+  var MIN_Y = 130;
+  var MAX_Y = 630;
   var mapPinMain = document.querySelector('.map__pin--main');
   var mapPinMainHeight = mapPinMain.offsetHeight;
   var mapPinMainWidth = mapPinMain.offsetWidth;
@@ -25,7 +27,7 @@
 
   window.apartamentList = [];
   var successHandler = function (data) {
-    activePage();
+    activatePage();
     window.apartamentList = data;
     for (var i = 0; i < window.apartamentList.length; i++) {
       window.apartamentList[i].id = i;
@@ -53,7 +55,7 @@
     });
   };
 
-  var activePage = function () {
+  var activatePage = function () {
     mapVision.classList.remove('map--faded');
     formDisabled.classList.remove('ad-form--disabled');
     mapFilter.disabled = false;
@@ -97,10 +99,9 @@
         x: moveEvt.clientX,
         y: moveEvt.clientY
       };
-      var minY = 130;
-      var maxY = 630;
 
-      if ((mapPinMain.offsetTop - shift.y) >= (minY - mapPinMainHeight) && (mapPinMain.offsetTop - shift.y) <= (maxY - mapPinMainHeight)) {
+
+      if ((mapPinMain.offsetTop - shift.y) >= (MIN_Y - mapPinMainHeight) && (mapPinMain.offsetTop - shift.y) <= (MAX_Y - mapPinMainHeight)) {
         mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
       }
 
@@ -124,6 +125,6 @@
 
   window.main = {
     successHandler: successHandler,
-    activePage: activePage
+    activatePage: activatePage
   };
 })();
