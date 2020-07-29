@@ -26,9 +26,10 @@
 
   var mapFilters = document.querySelector('.map__filters');
   var typeList = ['any', 'palace', 'flat', 'house', 'bungalo'];
-  var typeAp = 'any';
   var filterType = mapFilters.querySelector('#housing-type');
+  var typeAp = 'any';
 
+  // если меняется значение в фильтре ТИП ЖИЛЬЯ, то остаются только объявления с выбранным типом
   filterType.addEventListener('change', function () {
     for (var h = 0; h < typeList.length; h++) {
       filterType.value = typeList[h];
@@ -36,7 +37,6 @@
     }
     window.updatePins();
   });
-
   window.updatePins = function () {
     var sameTypeAp = window.apartamentList.filter(function (it) {
       return it.type === typeAp;

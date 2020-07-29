@@ -23,14 +23,15 @@
   var addressInput = noticeBlock.querySelector('#address');
   var main = document.querySelector('main');
 
-  window.apartamentList = [];
+
   var successHandler = function (data) {
     activePage();
     window.apartamentList = data;
     for (var i = 0; i < window.apartamentList.length; i++) {
       window.apartamentList[i].id = i;
     }
-    window.createPins(window.apartamentList);
+    window.updatePins();
+    // window.createPins(window.apartamentList);
   };
 
 
