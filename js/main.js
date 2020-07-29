@@ -23,7 +23,7 @@
   var addressInput = noticeBlock.querySelector('#address');
   var main = document.querySelector('main');
 
-
+  window.apartamentList = [];
   var successHandler = function (data) {
     activePage();
     window.apartamentList = data;

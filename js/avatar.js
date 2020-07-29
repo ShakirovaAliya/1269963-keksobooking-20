@@ -2,7 +2,7 @@
 
 (function () {
   var photoTypes = ['gif', 'jpg', 'jpeg', 'png'];
-  var AvatarChooser = document.querySelector('.ad-form__field input[type=file]');
+  var avatarChooser = document.querySelector('.ad-form__field input[type=file]');
   var avatarPreview = document.querySelector('.ad-form-header__preview img');
   var photoChooser = document.querySelector('.ad-form__upload input[type=file]');
   var photoPreviewContainer = document.querySelector('.ad-form__photo');
@@ -12,8 +12,9 @@
   photoPreview.width = photoPreviewContainer.offsetWidth;
   photoPreview.height = photoPreviewContainer.offsetWidth;
 
-  AvatarChooser.addEventListener('change', function () {
-    var file = AvatarChooser.files[0];
+
+  avatarChooser.addEventListener('change', function () {
+    var file = avatarChooser.files[0];
     var fileName = file.name.toLowerCase();
     var matches = photoTypes.some(function (it) {
       return fileName.endsWith(it);
