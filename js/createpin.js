@@ -2,6 +2,7 @@
 
 (function () {
   var maxPinCount = 5;
+  var mapCard = document.querySelector('.map__card');
   var mapPin = document.querySelector('.map__pins');
   var similarMapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var createPin = function (properties) {
@@ -23,7 +24,6 @@
       fragment.appendChild(createPin(data[i]));
     }
     mapPin.appendChild(fragment);
-
   };
 
 
@@ -32,16 +32,22 @@
   var typeOfHouse = 'any';
   filterType.addEventListener('change', function (evt) {
     typeOfHouse = evt.target.value;
+    if (mapCard) {
+      mapCard.remove();
+    }
     window.updatePins();
   });
-/*
+
   var filterPrice = mapFilters.querySelector('#housing-price');
   var priceOfHouse = '';
   filterPrice.addEventListener('change', function (evt) {
     priceOfHouse = evt.target.value;
+    if (mapCard) {
+      mapCard.remove();
+    }
     window.updatePins();
   });
-
+  /*
   var filterRooms = mapFilters.querySelector('#housing-rooms');
   var roomsOfHouse = '';
   filterRooms.addEventListener('change', function (evt) {
@@ -60,9 +66,10 @@
     var sameTypeAp = window.apartamentList.filter(function (it) {
       return it.type === typeOfHouse.value;
     });
-    /* var samePriceAp = window.apartamentList.filter(function (it) {
+    var samePriceAp = window.apartamentList.filter(function (it) {
       return it.price === priceOfHouse.value;
     });
+    /*
     var sameRoomsAp = window.apartamentList.filter(function (it) {
       return it.rooms === roomsOfHouse.value;
     });
@@ -70,12 +77,17 @@
       return it.guests === guestsOfHouse.value;
     });
     */
+    var filteredPins = sameTypeAp.concat(samePriceAp);
 
-    window.createPins(sameTypeAp);
+    var uniquePins = filteredPins.filter(function (it, i) {
+      return filteredPins.indexOf(it) === i;
+    });
+
+    window.createPins(uniquePins);
   };
 
   /*
-  .concat(samePriceAp).concat(sameRoomsAp).concat(sameGuestsAp)
+  .concat(samePriceAp).concat(sameRoomsAp).concat(sameGuestsAp).concat(window.apartamentList)
   var typeList = ['any', 'palace', 'flat', 'house', 'bungalo'];
   var priceList = ['any', 'middle', 'low', 'high'];
   var roomsList = ['any', '1', '2', '3'];
