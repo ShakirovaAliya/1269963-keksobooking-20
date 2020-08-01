@@ -78,7 +78,7 @@
     mapVision.classList.add('map--faded');
     var newMapCard = document.querySelector('.map__card');
     if (newMapCard) {
-      newMapCard.classList.add('hidden');
+      newMapCard.remove();
     }
     var newPin = document.querySelectorAll('.map__pin');
     for (var i = 0; i < newPin.length; i++) {

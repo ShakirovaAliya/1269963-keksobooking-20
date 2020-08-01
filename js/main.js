@@ -32,6 +32,7 @@
     for (var i = 0; i < window.apartamentList.length; i++) {
       window.apartamentList[i].id = i;
     }
+    window.createPins(window.apartamentList);
     window.updatePins();
   };
 
@@ -54,6 +55,7 @@
       }
     });
   };
+
 
   var activatePage = function () {
     mapVision.classList.remove('map--faded');

@@ -2,7 +2,6 @@
 
 (function () {
   var MAX_PIN_COUNT = 5;
-  var mapCard = document.querySelector('.map__card');
   var mapPin = document.querySelector('.map__pins');
   var similarMapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var createPin = function (properties) {
@@ -26,76 +25,133 @@
     mapPin.appendChild(fragment);
   };
 
+  var deleteCardPins = function () {
+    var newPin = document.querySelectorAll('.map__pin');
+    var newMapCard = document.querySelector('.map__card');
+    if (newMapCard) {
+      newMapCard.remove();
+    }
+    if (newPin) {
+      for (var i = 0; i < newPin.length; i++) {
+        newPin[i].classList.add('hidden');
+      }
+    }
+    var mapPinMain = document.querySelector('.map__pin--main');
+    mapPinMain.classList.remove('hidden');
+  };
+
 
   var mapFilters = document.querySelector('.map__filters');
   var filterType = mapFilters.querySelector('#housing-type');
-  var typeOfHouse = '';
+  filterType.value = 'any';
   filterType.addEventListener('change', function (evt) {
-    typeOfHouse = evt.target.value;
-    if (mapCard) {
-      mapCard.remove();
-    }
-    window.updatePins();
+    deleteCardPins();
+    filterType = evt.target.value;
+    window.debounce(window.updatePins());
   });
-
-
-  /*
-    var filterPrice = mapFilters.querySelector('#housing-price');
-  var priceOfHouse = '';
+  var filterPrice = mapFilters.querySelector('#housing-price');
+  filterPrice.value = 'any';
   filterPrice.addEventListener('change', function (evt) {
-    priceOfHouse = evt.target.value;
-    if (mapCard) {
-      mapCard.remove();
-    }
-    window.updatePins();
+    deleteCardPins();
+    filterPrice = evt.target.value;
+    window.debounce(window.updatePins());
   });
+
   var filterRooms = mapFilters.querySelector('#housing-rooms');
-  var roomsOfHouse = '';
+  filterRooms.value = 'any';
   filterRooms.addEventListener('change', function (evt) {
-    roomsOfHouse = evt.target.value;
-    window.updatePins();
+    deleteCardPins();
+    filterRooms = evt.target.value;
+    window.debounce(window.updatePins());
   });
 
   var filterGuests = mapFilters.querySelector('#housing-guests');
-  var guestsOfHouse = '';
+  filterGuests.value = 'any';
   filterGuests.addEventListener('change', function (evt) {
-    guestsOfHouse = evt.target.value;
-    window.updatePins();
+    deleteCardPins();
+    filterGuests = evt.target.value;
+    window.debounce(window.updatePins());
   });
-*/
-  window.updatePins = function () {
-    var sameTypeAp = window.apartamentList.filter(function (it) {
-      return it.offer.type === typeOfHouse;
+
+  var filterFeatures = mapFilters.querySelector('#housing-features');
+  var mapCheckbox = filterFeatures.querySelectorAll('.map__checkbox');
+  for (var j = 0; j < mapCheckbox.length; j++) {
+    mapCheckbox[j].addEventListener('change', function (evt) {
+      if (mapCheckbox[j].checked === true) {
+        mapCheckbox = evt.target.value;
+      }
+      deleteCardPins();
+      window.debounce(window.updatePins());
     });
-    /*
+  }
+  /*
+  var getRank = function (apartamentList) {
+    var rank = 0;
+    if (window.apartamentList.offer.type === filterType) {
+      rank += 5;
+    }
+    if (window.apartamentList.offer.price === filterPrice) {
+      rank += 4;
+    }
+    if (window.apartamentList.offer.rooms === filterRooms) {
+      rank += 3;
+    }
+    if (window.apartamentList.offer.guests === filterGuests) {
+      rank += 2;
+    }
+    if (window.apartamentList.offer.features === mapCheckbox) {
+      rank += 1;
+    }
+    return rank;
+  };
+
+  window.updatePins = function () {
+    window.render(window.apartamentList.slice().
+    sort(function (left, right) {
+      var rankDiff = getRank(right) - getRank(left);
+      if (rankDiff === 0) {
+        rankDiff = window.apartamentList.indexOf(left) - window.apartamentList.indexOf(right);
+      }
+      return rankDiff;
+    }));
+  };
+  */
+
+  window.updatePins = function () {
+
+    var sameTypePriceRoomsGuestsAp = window.apartamentList.filter(function (it) {
+      return it.offer.type === filterType &&
+        it.offer.price === filterPrice &&
+        it.offer.rooms === filterRooms.value &&
+        it.offer.guests === filterGuests.value &&
+        it.offer.features === mapCheckbox.checked;
+    });
+    var sameTypeAp = window.apartamentList.filter(function (it) {
+      return it.offer.type === filterType;
+    });
+    var samePriceAp = window.apartamentList.filter(function (it) {
+      return it.offer.price === filterPrice;
+    });
     var sameRoomsAp = window.apartamentList.filter(function (it) {
-      return it.rooms === roomsOfHouse.value;
+      return it.offer.rooms === filterRooms;
     });
     var sameGuestsAp = window.apartamentList.filter(function (it) {
-      return it.guests === guestsOfHouse.value;
+      return it.offer.guests === filterGuests;
     });
-    var filteredPins = sameTypeAp.concat(samePriceAp);
-
+    var sameFeaturesAp = window.apartamentList.filter(function (it) {
+      return it.offer.features === mapCheckbox;
+    });
+    var filteredPins = sameTypePriceRoomsGuestsAp;
+    filteredPins = filteredPins.concat(sameTypeAp);
+    filteredPins = filteredPins.concat(samePriceAp);
+    filteredPins = filteredPins.concat(sameRoomsAp);
+    filteredPins = filteredPins.concat(sameGuestsAp);
+    filteredPins = filteredPins.concat(sameFeaturesAp);
     var uniquePins = filteredPins.filter(function (it, i) {
       return filteredPins.indexOf(it) === i;
     });
-       var samePriceAp = window.apartamentList.filter(function (it) {
-      return it.offer.price === priceOfHouse;
-    });
-    */
+    window.createPins(uniquePins);
 
-
-    window.createPins(sameTypeAp);
   };
-
-  /*
-  .concat(samePriceAp).concat(sameRoomsAp).concat(sameGuestsAp).concat(window.apartamentList)
-  var typeList = ['any', 'palace', 'flat', 'house', 'bungalo'];
-  var priceList = ['any', 'middle', 'low', 'high'];
-  var roomsList = ['any', '1', '2', '3'];
-  var guestsList = ['any', '1', '2', '0'];
-  var filterFeatures = mapFilters.querySelector('#housing-features');
-  */
-
 
 })();
