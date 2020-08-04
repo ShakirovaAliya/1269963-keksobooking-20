@@ -9,7 +9,7 @@
   var mapPinWidth = mapPin.offsetWidth;
   var noticeBlock = document.querySelector('.notice');
   var formDisabled = document.querySelector('.ad-form--disabled');
-  var mapFilter = document.querySelector('.map__filters');
+  var formFilters = document.querySelector('.map__filters');
   var mapVision = document.querySelector('.map');
   var titleInput = noticeBlock.querySelector('#title');
   var roomsNumber = noticeBlock.querySelector('#room_number');
@@ -33,7 +33,6 @@
       window.apartamentList[i].id = i;
     }
     window.createPins(window.apartamentList);
-    window.updatePins();
   };
 
 
@@ -60,7 +59,7 @@
   var activatePage = function () {
     mapVision.classList.remove('map--faded');
     formDisabled.classList.remove('ad-form--disabled');
-    mapFilter.disabled = false;
+    formFilters.disabled = false;
     titleInput.disabled = false;
     roomsNumber.removeAttribute('disabled', 'true');
     capacityGuests.removeAttribute('disabled', 'true');
