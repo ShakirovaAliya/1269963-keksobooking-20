@@ -175,7 +175,7 @@
     }
     var mapPinMain = document.querySelector('.map__pin--main');
     mapPinMain.classList.remove('hidden');
-    window.pinsFragment = window.createPins(window.apartmentsList.filter(commonFilter));
+    window.pinsFragment = window.apartmentsList.filter(commonFilter);
     mapPin.appendChild(window.pinsFragment);
   };
   //  для каждого елемента массива ставим слушатель
