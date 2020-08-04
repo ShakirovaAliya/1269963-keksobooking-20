@@ -175,8 +175,9 @@
     }
     var mapPinMain = document.querySelector('.map__pin--main');
     mapPinMain.classList.remove('hidden');
-    window.pinsFragment = window.apartmentsList.filter(commonFilter);
-    mapPin.appendChild(window.pinsFragment);
+    window.pinsFragment = window.apartamentList.filter(commonFilter);
+    window.createPins(window.pinsFragment);
+    // mapPin.appendChild(window.pinsFragment);
   };
   //  для каждого елемента массива ставим слушатель
   formFilters.addEventListener('change', onChangePinFiltersFields);
