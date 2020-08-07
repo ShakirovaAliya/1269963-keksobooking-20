@@ -160,7 +160,7 @@
     return typeOfHousingFilter(elem) && priceOfHousingfilter(elem) && numOfRoomsFilter(elem) && numOfGuestsFilter(elem) && featuresFilter(elem);
   };
   //  событие изменения фильтров пинов
-  var onChangePinFiltersFields = function () {
+  var onChangePinFiltersFields = window.debounce(function () {
     //  удаление пинов
     // window.remove('.map__pin');
     //  удаление карточки
@@ -178,7 +178,7 @@
     window.pinsFragment = window.apartamentList.filter(commonFilter);
     window.createPins(window.pinsFragment);
     // mapPin.appendChild(window.pinsFragment);
-  };
+  });
   //  для каждого елемента массива ставим слушатель
   formFilters.addEventListener('change', onChangePinFiltersFields);
   /*
