@@ -169,12 +169,12 @@
     if (newMapCard) {
       newMapCard.remove();
     }
+    // var mapPinMain = document.querySelector('.map__pin--main');
+    // mapPinMain.classList.remove('hidden');
     var newPin = document.querySelectorAll('.map__pin');
     for (var i = 0; i < newPin.length; i++) {
-      newPin[i].classList.add('hidden');
+      newPin[i].remove();
     }
-    var mapPinMain = document.querySelector('.map__pin--main');
-    mapPinMain.classList.remove('hidden');
     window.pinsFragment = window.apartamentList.filter(commonFilter);
     window.createPins(window.pinsFragment);
     // mapPin.appendChild(window.pinsFragment);
