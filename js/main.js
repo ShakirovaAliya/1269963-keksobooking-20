@@ -1,5 +1,7 @@
 'use strict';
 (function () {
+  var MIN_Y = 130;
+  var MAX_Y = 630;
   var mapPinMain = document.querySelector('.map__pin--main');
   var mapPinMainHeight = mapPinMain.offsetHeight;
   var mapPinMainWidth = mapPinMain.offsetWidth;
@@ -7,7 +9,7 @@
   var mapPinWidth = mapPin.offsetWidth;
   var noticeBlock = document.querySelector('.notice');
   var formDisabled = document.querySelector('.ad-form--disabled');
-  var mapFilter = document.querySelector('.map__filters');
+  var formFilters = document.querySelector('.map__filters');
   var mapVision = document.querySelector('.map');
   var titleInput = noticeBlock.querySelector('#title');
   var roomsNumber = noticeBlock.querySelector('#room_number');
@@ -21,43 +23,16 @@
   var imagesInput = noticeBlock.querySelector('#images');
   var buttonSubmit = noticeBlock.querySelector('.ad-form__element--submit');
   var addressInput = noticeBlock.querySelector('#address');
-  var maxPinCount = 8;
   var main = document.querySelector('main');
 
-
-  // тут я просто вынес в отдельную функцию логику отрисовки всех пинов
-  // Всю логику,которую можно обьединить в функции по смыслу( отрисовка всех пинов,отрисовка карточек)
-  // нужно обьединять в функции , так позже проще работать с кодом*/
-  var createPins = function (data) {
-    var fragment = document.createDocumentFragment();
-    for (var i = 0; i < maxPinCount; i++) {
-      fragment.appendChild(window.createpin.createPin(data[i]));
-    }
-    mapPin.appendChild(fragment);
-  };
-
-
+  window.apartamentList = [];
   var successHandler = function (data) {
-    // если фун-я window.load выбросила успешное получение данных
-    // а именно successHandler то запускаеться колбэк successHandler в котором
-    // мы и описываем всю асинхронную логику
-    // Если по логике
-    // 1-е  мы переводим страницу в активный режим
-    // 2-е  отрисовуем пины с помощью функции createPins на основании данных,
-    // которые нам пришли с сервера и в которые мы добавили id*/
-    activePage();
-    // выносим переменную apartamentList в область видимости window
-    // что б дальше можно было ней пользоваться и записываем в неё данные
-    // которые пришли с сервера data
+    activatePage();
     window.apartamentList = data;
-    // поскольку отображение попапа мы реализовали через делегирование
-    // которое основуеться на поиске id елемента - добавляем каждому елементу массива данных поле id
-    // с помощью цикла где id = индексу елемента в массиве
     for (var i = 0; i < window.apartamentList.length; i++) {
       window.apartamentList[i].id = i;
     }
-    // дальше на основании данных window.apartamentList отрисовуем пины
-    createPins(window.apartamentList);
+    window.createPins(window.apartamentList);
   };
 
 
@@ -80,34 +55,11 @@
     });
   };
 
-  var defaultOptionItem = document.createElement('option');
-  var housingType = document.querySelector('#housing-type');
-  var defaultOptionItemTypeAppartments = defaultOptionItem.cloneNode(true);
-  housingType.appendChild(defaultOptionItemTypeAppartments);
-  window.apartamentList = [];
-  var appartmentType = ['any', 'palace', 'flat', 'house', 'bungalo'];
-  var typeAp;
-  housingType.addEventListener('change', function () {
-    for (var h = 0; h < appartmentType.length; h++) {
-      housingType.value = appartmentType[h];
-      typeAp = appartmentType[h];
-    }
-    updateAppartments();
-  });
-  var updateAppartments = function () {
-    var sameAppartments = window.apartamentList.filter(function (it) {
-      return it.typeAp === typeAp;
-    });
-    createPins(sameAppartments);
-  };
 
-  var activePage = function () {
-    // убрал от сюдого window.load(successHandler) поскольку
-    // при вызове window.load(..., ...) нам не всегда нужно быдет
-    // переводить екран в активный режим, а только при удачной загрузке данных с сервера successHandler
+  var activatePage = function () {
     mapVision.classList.remove('map--faded');
     formDisabled.classList.remove('ad-form--disabled');
-    mapFilter.disabled = false;
+    formFilters.disabled = false;
     titleInput.disabled = false;
     roomsNumber.removeAttribute('disabled', 'true');
     capacityGuests.removeAttribute('disabled', 'true');
@@ -127,15 +79,12 @@
   mapPinMain.addEventListener('keydown', function (evt) {
     if (evt.key === 'Enter') {
       evt.preventDefault();
-      // при нажатии кнопки запустим обработку функции  запроса с сервера данных
       window.load(successHandler, errorHandler);
     }
   });
 
   mapPinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
-    // если же пользователь нажал кнопку мыши - запустим обработку функции
-    //  запроса с сервера данных
     window.load(successHandler, errorHandler);
     var startCoords = {
       x: evt.clientX,
@@ -151,10 +100,9 @@
         x: moveEvt.clientX,
         y: moveEvt.clientY
       };
-      var minY = 130;
-      var maxY = 630;
 
-      if ((mapPinMain.offsetTop - shift.y) >= (minY - mapPinMainHeight) && (mapPinMain.offsetTop - shift.y) <= (maxY - mapPinMainHeight)) {
+
+      if ((mapPinMain.offsetTop - shift.y) >= (MIN_Y - mapPinMainHeight) && (mapPinMain.offsetTop - shift.y) <= (MAX_Y - mapPinMainHeight)) {
         mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
       }
 
@@ -178,7 +126,6 @@
 
   window.main = {
     successHandler: successHandler,
-    activePage: activePage
+    activatePage: activatePage
   };
 })();
-
